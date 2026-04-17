@@ -50,6 +50,13 @@ emergence/
 
 ## Architecture
 
+Detailed architecture documentation for each sub-project:
+
+- [common/ARCHITECTURE.md](common/ARCHITECTURE.md) — Cross-project utility library
+- [em-game/ARCHITECTURE.md](em-game/ARCHITECTURE.md) — Main game (client + server)
+- [em-tools/ARCHITECTURE.md](em-tools/ARCHITECTURE.md) — Editing tools
+- [gsub/ARCHITECTURE.md](gsub/ARCHITECTURE.md) — Graphics subsystem
+
 ### Client-Server Model
 
 The server is the sole authority on game state. Clients send control inputs (thrust, brake, roll, fire) and the server runs physics, collision detection, and state changes, propagating updates to all connected clients.
