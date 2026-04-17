@@ -15,12 +15,12 @@
 #include <stdlib.h>
 #include <memory.h>
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../common/llist.h"
-#include "shared/network.h"
-#include "shared/sgame.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "llist.h"
+#include "network.h"
+#include "sgame.h"
 
 #include "game.h"
 #include "tick.h"

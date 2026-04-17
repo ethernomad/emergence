@@ -16,9 +16,9 @@
 
 #include <zlib.h>
 
-#include "../gsub/gsub.h"
-#include "../common/stringbuf.h"
-#include "../common/user.h"
+#include "gsub.h"
+#include "stringbuf.h"
+#include "user.h"
 
 
 

@@ -1,4 +1,9 @@
 Package: emergence
 Version: 0.9
-Architecture: i386
+Architecture: amd64
 Maintainer: Jonathan Brown <jbrown@bluedroplet.com>
+Depends: libsdl1.2, libssl3, zlib1g, libpng16-16, libx11-6, libxrandr2, libasound2, libvorbisfile3, libgl1
+Build-Depends: meson, pkg-config, libsdl1.2-dev, libssl-dev, zlib1g-dev, libpng-dev, libx11-dev, libxrandr-dev, libasound2-dev, libvorbis-dev, libgl-dev, libglu1-mesa-dev
+Section: games
+Priority: optional
+Description: Fast-paced multiplayer top-down arcade space-combat game

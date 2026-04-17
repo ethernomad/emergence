@@ -15,8 +15,8 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "../../common/types.h"
-#include "../../common/stringbuf.h"
+#include "types.h"
+#include "stringbuf.h"
 #include "cvar.h"
 
 void console_print(char *text);

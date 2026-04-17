@@ -12,8 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include <bonobo.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "callbacks.h"
 #include "glade.h"
@@ -68,15 +67,15 @@ create_rocket_launcher_properties_dialog (void)
   frame2 = gtk_frame_new (NULL);
   gtk_box_pack_start (GTK_BOX (vbox2), frame2, FALSE, FALSE, 0);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Rocket Launcher Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Rocket Launcher Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_container_add (GTK_CONTAINER (frame2), texture_pixmapentry);
   gtk_container_set_border_width (GTK_CONTAINER (texture_pixmapentry), 5);
   gtk_widget_set_sensitive (texture_pixmapentry, FALSE);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   texture_checkbutton = gtk_check_button_new_with_mnemonic ("Texture (global)");
@@ -240,15 +239,15 @@ create_speedup_ramp_properties_dialog (void)
   gtk_widget_show (frame3);
   gtk_box_pack_start (GTK_BOX (vbox4), frame3, FALSE, FALSE, 0);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_container_add (GTK_CONTAINER (frame3), texture_pixmapentry);
   gtk_container_set_border_width (GTK_CONTAINER (texture_pixmapentry), 5);
   gtk_widget_set_sensitive (texture_pixmapentry, FALSE);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   texture_checkbutton = gtk_check_button_new_with_mnemonic ("Texture");
@@ -457,15 +456,15 @@ create_minigun_properties_dialog (void)
   frame4 = gtk_frame_new (NULL);
   gtk_box_pack_start (GTK_BOX (vbox6), frame4, FALSE, FALSE, 0);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Minigun Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Minigun Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_container_add (GTK_CONTAINER (frame4), texture_pixmapentry);
   gtk_container_set_border_width (GTK_CONTAINER (texture_pixmapentry), 5);
   gtk_widget_set_sensitive (texture_pixmapentry, FALSE);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   texture_checkbutton = gtk_check_button_new_with_mnemonic ("Texture (global)");
@@ -620,15 +619,15 @@ create_plasma_cannon_properties_dialog (void)
   frame5 = gtk_frame_new (NULL);
   gtk_box_pack_start (GTK_BOX (vbox8), frame5, FALSE, FALSE, 0);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Plasma Cannon Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Plasma Cannon Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_container_add (GTK_CONTAINER (frame5), texture_pixmapentry);
   gtk_container_set_border_width (GTK_CONTAINER (texture_pixmapentry), 5);
   gtk_widget_set_sensitive (texture_pixmapentry, FALSE);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   texture_checkbutton = gtk_check_button_new_with_mnemonic ("Texture (global)");
@@ -783,15 +782,15 @@ create_rails_properties_dialog (void)
   frame6 = gtk_frame_new (NULL);
   gtk_box_pack_start (GTK_BOX (vbox10), frame6, FALSE, FALSE, 0);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Rails Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Rails Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_container_add (GTK_CONTAINER (frame6), texture_pixmapentry);
   gtk_container_set_border_width (GTK_CONTAINER (texture_pixmapentry), 5);
   gtk_widget_set_sensitive (texture_pixmapentry, FALSE);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   texture_checkbutton = gtk_check_button_new_with_mnemonic ("Texture (global)");
@@ -946,15 +945,15 @@ create_shield_energy_properties_dialog (void)
   frame7 = gtk_frame_new (NULL);
   gtk_box_pack_start (GTK_BOX (vbox13), frame7, FALSE, FALSE, 0);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Shield Energy Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Shield Energy Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_container_add (GTK_CONTAINER (frame7), texture_pixmapentry);
   gtk_container_set_border_width (GTK_CONTAINER (texture_pixmapentry), 5);
   gtk_widget_set_sensitive (texture_pixmapentry, FALSE);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   texture_checkbutton = gtk_check_button_new_with_mnemonic ("Texture (global)");
@@ -1120,13 +1119,13 @@ create_spawn_point_properties_dialog (void)
   gtk_container_set_border_width (GTK_CONTAINER (texture_vbox), 5);
   gtk_widget_set_sensitive (texture_vbox, FALSE);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_box_pack_start (GTK_BOX (texture_vbox), texture_pixmapentry, FALSE, FALSE, 0);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   hbox54 = gtk_hbox_new (TRUE, 5);
@@ -1335,13 +1334,13 @@ create_gravity_well_properties_dialog (void)
   gtk_container_set_border_width (GTK_CONTAINER (texture_vbox), 5);
   gtk_widget_set_sensitive (texture_vbox, FALSE);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_box_pack_start (GTK_BOX (texture_vbox), texture_pixmapentry, FALSE, FALSE, 0);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   hbox41 = gtk_hbox_new (TRUE, 5);
@@ -1572,13 +1571,13 @@ create_teleporter_properties_dialog (void)
   gtk_container_set_border_width (GTK_CONTAINER (texture_vbox), 5);
   gtk_widget_set_sensitive (texture_vbox, FALSE);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_box_pack_start (GTK_BOX (texture_vbox), texture_pixmapentry, FALSE, FALSE, 0);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   hbox46 = gtk_hbox_new (TRUE, 5);
@@ -1958,11 +1957,11 @@ create_door_switch_properties_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox57), label82, TRUE, TRUE, 0);
   gtk_misc_set_alignment (GTK_MISC (label82), 0, 0.5);
 
-  door_colorpicker = gnome_color_picker_new ();
+  door_colorpicker = gtk_color_button_new ();
   gtk_widget_show (door_colorpicker);
   gtk_box_pack_start (GTK_BOX (hbox57), door_colorpicker, FALSE, FALSE, 0);
-  gnome_color_picker_set_title (GNOME_COLOR_PICKER (door_colorpicker), "Choose Colour/Opacity");
-  gnome_color_picker_set_use_alpha (GNOME_COLOR_PICKER (door_colorpicker), TRUE);
+  gtk_color_button_set_title (GTK_COLOR_BUTTON (door_colorpicker), "Choose Colour/Opacity");
+  gtk_color_button_set_use_alpha (GTK_COLOR_BUTTON (door_colorpicker), TRUE);
 
   hbox78 = gtk_hbox_new (TRUE, 5);
   gtk_widget_show (hbox78);
@@ -2087,11 +2086,11 @@ create_door_switch_properties_dialog (void)
   gtk_box_pack_start (GTK_BOX (hbox69), label95, TRUE, TRUE, 0);
   gtk_misc_set_alignment (GTK_MISC (label95), 0, 0.5);
 
-  switch_colorpicker = gnome_color_picker_new ();
+  switch_colorpicker = gtk_color_button_new ();
   gtk_widget_show (switch_colorpicker);
   gtk_box_pack_start (GTK_BOX (hbox69), switch_colorpicker, FALSE, FALSE, 0);
-  gnome_color_picker_set_title (GNOME_COLOR_PICKER (switch_colorpicker), "Choose Colour/Opacity");
-  gnome_color_picker_set_use_alpha (GNOME_COLOR_PICKER (switch_colorpicker), TRUE);
+  gtk_color_button_set_title (GTK_COLOR_BUTTON (switch_colorpicker), "Choose Colour/Opacity");
+  gtk_color_button_set_use_alpha (GTK_COLOR_BUTTON (switch_colorpicker), TRUE);
 
   hbox79 = gtk_hbox_new (TRUE, 5);
   gtk_widget_show (hbox79);
@@ -2418,11 +2417,11 @@ create_fill_properties_dialog (void)
   gtk_box_pack_start (GTK_BOX (solid_hbox), label97, TRUE, TRUE, 0);
   gtk_misc_set_alignment (GTK_MISC (label97), 0, 0.5);
 
-  solid_colorpicker = gnome_color_picker_new ();
+  solid_colorpicker = gtk_color_button_new ();
   gtk_widget_show (solid_colorpicker);
   gtk_box_pack_start (GTK_BOX (solid_hbox), solid_colorpicker, FALSE, FALSE, 0);
-  gnome_color_picker_set_title (GNOME_COLOR_PICKER (solid_colorpicker), "Choose Colour/Opacity");
-  gnome_color_picker_set_use_alpha (GNOME_COLOR_PICKER (solid_colorpicker), TRUE);
+  gtk_color_button_set_title (GTK_COLOR_BUTTON (solid_colorpicker), "Choose Colour/Opacity");
+  gtk_color_button_set_use_alpha (GTK_COLOR_BUTTON (solid_colorpicker), TRUE);
 
   solid_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, "Solid");
   gtk_widget_show (solid_radiobutton);
@@ -2440,13 +2439,13 @@ create_fill_properties_dialog (void)
   gtk_container_set_border_width (GTK_CONTAINER (texture_vbox), 5);
   gtk_widget_set_sensitive (texture_vbox, FALSE);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_box_pack_start (GTK_BOX (texture_vbox), texture_pixmapentry, FALSE, FALSE, 0);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   hbox72 = gtk_hbox_new (TRUE, 5);
@@ -2770,11 +2769,11 @@ create_wall_properties_dialog (void)
   gtk_box_pack_start (GTK_BOX (solid_hbox), label117, TRUE, TRUE, 0);
   gtk_misc_set_alignment (GTK_MISC (label117), 0, 0.5);
 
-  solid_colorpicker = gnome_color_picker_new ();
+  solid_colorpicker = gtk_color_button_new ();
   gtk_widget_show (solid_colorpicker);
   gtk_box_pack_start (GTK_BOX (solid_hbox), solid_colorpicker, FALSE, FALSE, 0);
-  gnome_color_picker_set_title (GNOME_COLOR_PICKER (solid_colorpicker), "Choose Colour/Opacity");
-  gnome_color_picker_set_use_alpha (GNOME_COLOR_PICKER (solid_colorpicker), TRUE);
+  gtk_color_button_set_title (GTK_COLOR_BUTTON (solid_colorpicker), "Choose Colour/Opacity");
+  gtk_color_button_set_use_alpha (GTK_COLOR_BUTTON (solid_colorpicker), TRUE);
 
   solid_radiobutton = gtk_radio_button_new_with_mnemonic (NULL, "Solid");
   gtk_widget_show (solid_radiobutton);
@@ -2792,13 +2791,13 @@ create_wall_properties_dialog (void)
   gtk_container_set_border_width (GTK_CONTAINER (texture_vbox), 5);
   gtk_widget_set_sensitive (texture_vbox, FALSE);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_box_pack_start (GTK_BOX (texture_vbox), texture_pixmapentry, FALSE, FALSE, 0);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   hbox82 = gtk_hbox_new (TRUE, 5);
@@ -3132,13 +3131,13 @@ create_end_node_properties_dialog (void)
   gtk_container_set_border_width (GTK_CONTAINER (texture_vbox), 5);
   gtk_widget_set_sensitive (texture_vbox, FALSE);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_box_pack_start (GTK_BOX (texture_vbox), texture_pixmapentry, FALSE, FALSE, 0);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   hbox165 = gtk_hbox_new (TRUE, 5);
@@ -3538,13 +3537,13 @@ create_crossover_node_properties_dialog (void)
   gtk_container_set_border_width (GTK_CONTAINER (texture_vbox), 5);
   gtk_widget_set_sensitive (texture_vbox, FALSE);
 
-  texture_pixmapentry = gnome_pixmap_entry_new (NULL, "Select Texture", TRUE);
+  texture_pixmapentry = gtk_file_chooser_button_new ("Select Texture", GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_show (texture_pixmapentry);
   gtk_box_pack_start (GTK_BOX (texture_vbox), texture_pixmapentry, FALSE, FALSE, 0);
-  gnome_file_entry_set_modal (GNOME_FILE_ENTRY (texture_pixmapentry), TRUE);
-  g_object_set (G_OBJECT (texture_pixmapentry), "use_filechooser", TRUE, NULL);
+  
+  
 
-  texture_entry = gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (texture_pixmapentry));
+  texture_entry = GTK_WIDGET (texture_pixmapentry);
   gtk_widget_show (texture_entry);
 
   hbox160 = gtk_hbox_new (TRUE, 5);

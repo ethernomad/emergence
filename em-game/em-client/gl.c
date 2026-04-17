@@ -26,10 +26,10 @@
 #include <X11/Xlib.h>
 #include <GL/glx.h>
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../gsub/gsub.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "gsub.h"
 #include "console.h"
 #include "main.h"
 #include "entry.h"

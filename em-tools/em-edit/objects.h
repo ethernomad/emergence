@@ -8,6 +8,7 @@
 #ifndef _INC_OBJECTS
 #define _INC_OBJECTS
 
+#include <zlib.h>
 
 struct object_t
 {
@@ -167,12 +168,10 @@ int object_in_object_pointer_list(struct object_pointer_t *objectp0, struct obje
 int count_object_floating_images();
 
 
-#ifdef ZLIB_H
 void gzwrite_objects(gzFile file);
 void gzwrite_objects_compiled(gzFile file);
 int gzread_objects(gzFile file);
 void gzwrite_object_floating_images(gzFile file);
-#endif
 
 void run_object_menu(struct object_t *object);
 

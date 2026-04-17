@@ -16,13 +16,13 @@
 #include <math.h>
 
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../common/minmax.h"
-#include "shared/rdtsc.h"
-#include "../gsub/gsub.h"
-#include "shared/timer.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "minmax.h"
+#include "rdtsc.h"
+#include "gsub.h"
+#include "timer.h"
 #include "main.h"
 #include "game.h"
 #include "render.h"

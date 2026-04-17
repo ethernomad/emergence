@@ -20,12 +20,12 @@
 #include <string.h>
 #include <sys/time.h>
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "shared/timer.h"
-#include "../common/user.h"
-#include "shared/network.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "timer.h"
+#include "user.h"
+#include "network.h"
 #include "main.h"
 #include "render.h"
 #include "input.h"

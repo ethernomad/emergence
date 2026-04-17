@@ -8,6 +8,8 @@
 #ifndef _INC_POINTS
 #define _INC_POINTS
 
+#include <zlib.h>
+
 struct point_t
 {
 	uint32_t index;	// for saving
@@ -45,11 +47,9 @@ struct point_t *get_point(int x, int y, int *xoffset, int *yoffset);
 uint32_t count_point_pointers(struct point_pointer_t *pointp0);
 uint32_t count_points();
 	
-#if defined ZLIB_H
 void gzwrite_point_pointer_list(gzFile file, struct point_pointer_t *pointp0);
 void gzwrite_points(gzFile file);
 int gzread_points(gzFile file);
-#endif
 
 struct point_t *get_point_from_index(uint32_t index);
 void draw_points();

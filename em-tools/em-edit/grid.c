@@ -15,7 +15,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "../gsub/gsub.h"
+#include "gsub.h"
 #include "nodes.h"
 #include "interface.h"
 #include "main.h"

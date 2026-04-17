@@ -16,8 +16,8 @@
 #include <malloc.h>
 #include <memory.h>
 
-#include "../common/stringbuf.h"
-#include "../common/vertex.h"
+#include "stringbuf.h"
+#include "vertex.h"
 #include "gsub.h"
 
 

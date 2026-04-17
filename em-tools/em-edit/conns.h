@@ -8,6 +8,8 @@
 #ifndef _INC_CONNS
 #define _INC_CONNS
 
+#include <zlib.h>
+
 
 #define CONN_TYPE_STRAIGHT	0
 #define CONN_TYPE_CONIC		1
@@ -102,11 +104,9 @@ int check_for_unsquished_conns();
 int check_for_unverticied_conns();
 
 
-#if defined ZLIB_H
 void gzwrite_conns(gzFile file);
 int gzread_conns(gzFile file);
 void gzwrite_conn_pointer_list(gzFile file, struct conn_pointer_t *connp0);
 struct conn_pointer_t *gzread_conn_pointer_list(gzFile file);
-#endif
 
 #endif	// _INC_CONNS

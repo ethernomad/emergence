@@ -19,12 +19,12 @@
 #include <zlib.h>
 
 
-#include "../common/types.h"
-#include "../common/vertex.h"
-#include "../common/polygon.h"
-#include "../common/llist.h"
-#include "../common/minmax.h"
-#include "../gsub/gsub.h"
+#include "types.h"
+#include "vertex.h"
+#include "polygon.h"
+#include "llist.h"
+#include "minmax.h"
+#include "gsub.h"
 #include "rotate.h"
 
 

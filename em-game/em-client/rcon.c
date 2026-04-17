@@ -12,10 +12,10 @@
 
 #include <stdint.h>
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "shared/cvar.h"
-#include "shared/network.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "cvar.h"
+#include "network.h"
 #include "console.h"
 #include "rcon.h"
 

@@ -20,31 +20,31 @@
 
 #include <execinfo.h>
 
-#include "../../common/types.h"
-#include "../../common/minmax.h"
-#include "../../common/llist.h"
-#include "../../common/stringbuf.h"
-#include "../../common/buffer.h"
+#include "types.h"
+#include "minmax.h"
+#include "llist.h"
+#include "stringbuf.h"
+#include "buffer.h"
 #include "bsp.h"
 #include "objects.h"
 
 
 #ifdef EMSERVER
 #include "sgame.h"
-#include "../game.h"
-#include "../console.h"
+#include "game.h"
+#include "console.h"
 #endif
 
 #ifdef EMCLIENT
-#include "../particles.h"
+#include "particles.h"
 #include "sgame.h"
 #endif
 
 
 #ifdef EMCLIENT
-#include "../game.h"
-#include "../console.h"
-#include "../sound.h"
+#include "game.h"
+#include "console.h"
+#include "sound.h"
 #endif
 
 struct spawn_point_t *spawn_point0 = NULL;

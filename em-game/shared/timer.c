@@ -20,11 +20,11 @@
 
 #include <sys/time.h>
 
-#include "../../common/types.h"
-#include "../../common/llist.h"
+#include "types.h"
+#include "llist.h"
 #include "rdtsc.h"
 
-#include "../console.h"
+#include "console.h"
 
 
 
@@ -52,16 +52,11 @@ double get_wall_time()
 
 void init_timer()
 {
-	// TODO: change to integer reading
-	
-	double mhz;
-	FILE *file = popen("grep \"cpu MHz\" /proc/cpuinfo", "r");
-	fscanf(file, "%*s%*s%*s%lf", &mhz);
-	pclose(file);
-	
-	counts_per_second = (uint64_t)(mhz * 1000000.0);
-	
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	counts_per_second = 1000000000ULL;
+
 	console_print("Timer resolution: %u Hz\n", (uint32_t)counts_per_second);
-	
+
 	start_count = rdtsc();
 }

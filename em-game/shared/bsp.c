@@ -17,7 +17,7 @@
 
 #include <zlib.h>
 
-#include "../../common/inout.h"
+#include "inout.h"
 #include "bsp.h"
 
 

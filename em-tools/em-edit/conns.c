@@ -23,11 +23,11 @@
 #include <zlib.h>
 
 
-#include "../common/vertex.h"
-#include "../common/minmax.h"
-#include "../common/llist.h"
-#include "../common/inout.h"
-#include "../gsub/gsub.h"
+#include "vertex.h"
+#include "minmax.h"
+#include "llist.h"
+#include "inout.h"
+#include "gsub.h"
 #include "nodes.h"
 #include "conns.h"
 #include "curves.h"

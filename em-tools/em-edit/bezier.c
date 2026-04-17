@@ -17,8 +17,8 @@
 #include <math.h>
 #include <memory.h>
 
-#include "../common/vertex.h"
-#include "../common/llist.h"
+#include "vertex.h"
+#include "llist.h"
 #include "conns.h"
 #include "bezier.h"
 #include "worker.h"

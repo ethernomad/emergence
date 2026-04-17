@@ -16,7 +16,7 @@
 
 #include "shared/bsp.h"
 #include "line.h"
-#include "../gsub/gsub.h"
+#include "gsub.h"
 
 
 void draw_bsp_node(struct bspnode_t *node)

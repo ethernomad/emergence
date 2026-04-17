@@ -23,14 +23,14 @@
 #include <sys/epoll.h>
 #include <sys/poll.h>
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "shared/cvar.h"
-#include "shared/network.h"
-#include "shared/timer.h"
-#include "shared/alarm.h"
-#include "shared/sgame.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "cvar.h"
+#include "network.h"
+#include "timer.h"
+#include "alarm.h"
+#include "sgame.h"
 #include "main.h"
 #include "console.h"
 #include "game.h"

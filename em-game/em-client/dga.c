@@ -19,10 +19,10 @@
 #include <X11/Xlib.h>
 #include <xf86dga.h>
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../gsub/gsub.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "gsub.h"
 #include "main.h"
 #include "control.h"
 #include "entry.h"

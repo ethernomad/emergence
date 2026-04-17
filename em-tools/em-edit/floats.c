@@ -16,7 +16,7 @@
 
 #include <zlib.h>
 
-#include <objects.h>
+#include "objects.h"
 
 void gzwrite_floating_images(gzFile file)
 {

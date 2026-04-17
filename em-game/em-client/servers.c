@@ -24,17 +24,17 @@
 #include <string.h>
 #include <math.h>
 
-#include "shared/alarm.h"
-#include "shared/timer.h"
-#include "shared/servers.h"
-#include "shared/network.h"
-#include "shared/sgame.h"
-#include "../common/user.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../common/llist.h"
-#include "../common/minmax.h"
-#include "../gsub/gsub.h"
+#include "alarm.h"
+#include "timer.h"
+#include "servers.h"
+#include "network.h"
+#include "sgame.h"
+#include "user.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "llist.h"
+#include "minmax.h"
+#include "gsub.h"
 #include "render.h"
 #include "console.h"
 

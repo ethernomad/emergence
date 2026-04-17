@@ -17,10 +17,10 @@
 #include <stdint.h>
 #include <stdarg.h>
 
-#include "../common/prefix.h"
+#include "prefix.h"
 
-#include "../common/stringbuf.h"
-#include "../common/resource.h"
+#include "stringbuf.h"
+#include "resource.h"
 #include "gsub.h"
 
 uint8_t charlengths[256];

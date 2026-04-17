@@ -5,16 +5,12 @@
  * @homepage https://github.com/bluedroplet/emergence
  */
 
-typedef unsigned char byte;
-typedef unsigned short word;
-typedef unsigned long dword;
+#include <stdint.h>
 
-#ifdef LINUX
-typedef unsigned long long dwordlong;
-#else
-typedef unsigned __int64 dwordlong;
-#endif
-
+typedef uint8_t byte;
+typedef uint16_t word;
+typedef uint32_t dword;
+typedef uint64_t dwordlong;
 
 #ifndef NULL
 #define NULL 0

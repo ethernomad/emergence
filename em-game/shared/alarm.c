@@ -21,10 +21,10 @@
 
 #include <sys/time.h>
 
-#include "../../common/types.h"
-#include "../../common/llist.h"
+#include "types.h"
+#include "llist.h"
 
-#include "../console.h"
+#include "console.h"
 
 
 

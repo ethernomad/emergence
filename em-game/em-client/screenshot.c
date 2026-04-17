@@ -14,8 +14,8 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
-#include "../common/types.h"
-#include "../gsub/gsub.h"
+#include "types.h"
+#include "gsub.h"
 #include "render.h"
 #include "entry.h"
 

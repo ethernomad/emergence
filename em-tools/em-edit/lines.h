@@ -8,6 +8,7 @@
 #ifndef _INC_LINES
 #define _INC_LINES
 
+#include <zlib.h>
 
 struct line_pointer_t
 {
@@ -62,11 +63,9 @@ void run_door_switch_properties_dialog(void *menu, struct line_t *line);
 uint32_t count_lines();
 uint32_t count_line_pointers(struct line_pointer_t *linep0);
 
-#if defined ZLIB_H
 void gzwrite_line_pointer_list(gzFile file, struct line_pointer_t *linep0);
 void gzwrite_lines(gzFile file);
 int gzread_lines(gzFile file);
-#endif
 
 void run_line_menu(struct line_t *line);
 

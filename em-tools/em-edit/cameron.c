@@ -15,10 +15,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "../common/prefix.h"
+#include "prefix.h"
 
-#include "../common/resource.h"
-#include "../gsub/gsub.h"
+#include "resource.h"
+#include "gsub.h"
 #include "nodes.h"
 #include "map.h"
 #include "worker.h"

@@ -8,6 +8,8 @@
 #ifndef _INC_NFSTRING
 #define _INC_NFSTRING
 
+#include <stdint.h>
+#include <zlib.h>
 
 struct string_t
 {
@@ -38,10 +40,8 @@ void fwrite_string(struct string_t *string, FILE *file);
 struct string_t *fread_string(FILE *file);
 #endif
 
-#ifdef ZLIB_H
 void gzwrite_string(gzFile file, struct string_t *string);
 struct string_t *gzread_string(gzFile file);
-#endif
 
 int string_isempty(struct string_t *string);
 void string_clear(struct string_t *string);

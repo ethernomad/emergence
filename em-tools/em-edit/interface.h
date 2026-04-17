@@ -88,7 +88,7 @@ void object_deleted(struct object_t *object);
 extern struct object_pointer_t *selected_object0;
 #endif
 
-struct surface_t *s_select;
+extern struct surface_t *s_select;
 
 #ifdef	_INC_POINTS
 void join_point();

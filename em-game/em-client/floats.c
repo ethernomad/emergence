@@ -17,8 +17,8 @@
 
 #include <zlib.h>
 
-#include "../common/llist.h"
-#include "../gsub/gsub.h"
+#include "llist.h"
+#include "gsub.h"
 #include "game.h"
 #include "render.h"
 

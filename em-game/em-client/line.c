@@ -14,8 +14,8 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "../common/types.h"
-#include "../gsub/gsub.h"
+#include "types.h"
+#include "gsub.h"
 #include "render.h"
 #include "game.h"
 

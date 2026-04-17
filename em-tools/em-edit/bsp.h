@@ -8,12 +8,12 @@
 #ifndef _INC_BSP
 #define _INC_BSP
 
+#include <zlib.h>
+
 void invalidate_bsp_tree();
 void generate_bsp_tree();
 void generate_ui_bsp_tree();
-#ifdef ZLIB_H
 void gzwrite_bsp_tree(gzFile file);
-#endif
 void draw_bsp_tree();
 void kill_bsp_tree();
 

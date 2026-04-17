@@ -15,13 +15,13 @@
 #include <time.h>
 #include <string.h>
 
-#include "shared/servers.h"
-#include "shared/sgame.h"
-#include "shared/network.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../common/llist.h"
-#include "../common/minmax.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "servers.h"
+#include "sgame.h"
+#include "network.h"
+#include "llist.h"
+#include "minmax.h"
 #include "game.h"
 
 

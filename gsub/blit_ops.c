@@ -18,10 +18,12 @@
 
 #include "gsub.h"
 
+#if defined(__i386__) || defined(__x86_64__)
 void alpha_surface_blit_mmx() __attribute__ ((cdecl));
 void alpha_pixel_plot_x86()	__attribute__ ((cdecl));
 void alpha_rect_draw_mmx() __attribute__ ((cdecl));
 void surface_blit_mmx() __attribute__ ((cdecl));
+#endif
 
 
 

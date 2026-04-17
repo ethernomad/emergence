@@ -1,0 +1,13 @@
+# Build options for Emergence
+
+option('nonauthenticating',
+  type: 'boolean',
+  value: false,
+  description: 'Build server without key authentication (for open/LAN play)',
+)
+
+option('editor',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build the Emergence map editor (requires GTK+ 2.0)',
+)

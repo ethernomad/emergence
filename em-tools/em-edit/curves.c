@@ -21,15 +21,15 @@
 #include <assert.h>
 
 #include <zlib.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #define USE_GDK_PIXBUF
 
-#include "../common/llist.h"
-#include "../common/vertex.h"
-#include "../common/polygon.h"
-#include "../common/stringbuf.h"
-#include "../gsub/gsub.h"
+#include "llist.h"
+#include "vertex.h"
+#include "polygon.h"
+#include "stringbuf.h"
+#include "gsub.h"
 #include "conns.h"
 #include "bezier.h"
 #include "curves.h"
@@ -1233,7 +1233,7 @@ void invalidate_curve(struct curve_t *curve)		// always called when not working
 }
 
 
-void on_wall_solid_colorpicker_color_set(GnomeColorPicker *colorpicker, 
+void on_wall_solid_colorpicker_color_set(GtkWidget *colorpicker, 
 	guint red, guint green, guint blue, guint alpha, gpointer user_data)
 {
 	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(colorpicker));
@@ -1636,26 +1636,9 @@ void run_wall_properties_dialog(void *menu, struct curve_t *curve)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 			"texture_radiobutton")), TRUE);
 
-	gnome_color_picker_set_i8(GNOME_COLOR_PICKER(g_object_get_data(G_OBJECT(dialog), 
-		"solid_colorpicker")), curve->red, curve->green, curve->blue, curve->alpha);
-	
-	if(map_filename->text[0])
-	{
-		gnome_pixmap_entry_set_pixmap_subdir(GNOME_PIXMAP_ENTRY(g_object_get_data(G_OBJECT(dialog), 
-			"texture_pixmapentry")), map_path->text);
-	}
-	else
-	{
-		char *cwd = get_current_dir_name();
-		
-		struct string_t *s = new_string_text("%s/\n", cwd);
-		
-		gnome_pixmap_entry_set_pixmap_subdir(GNOME_PIXMAP_ENTRY(g_object_get_data(G_OBJECT(dialog), 
-			"texture_pixmapentry")), s->text);
-		
-		free(cwd);
-		free_string(s);
-	}
+	{ GdkColor _c = {0, curve->red<<8, curve->green<<8, curve->blue<<8}; gtk_color_button_set_color(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"solid_colorpicker")), &_c); gtk_color_button_set_alpha(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"solid_colorpicker")), curve->alpha<<8); }
 	
 	if(curve->texture_filename)
 	{

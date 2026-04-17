@@ -16,18 +16,18 @@
 #include <stdint.h>
 #include <math.h>
 
-//#include <gdk/gdkkeysyms.h>
-#include <gnome.h>
+#include <gdk/gdkkeysyms.h>
+#include <gtk/gtk.h>
 
 #include <assert.h>
 
-#include "../common/prefix.h"
+#include "prefix.h"
 
-#include "../common/minmax.h"
-#include "../common/llist.h"
-#include "../common/stringbuf.h"
-#include "../common/resource.h"
-#include "../gsub/gsub.h"
+#include "minmax.h"
+#include "llist.h"
+#include "stringbuf.h"
+#include "resource.h"
+#include "gsub.h"
 #include "nodes.h"
 #include "conns.h"
 #include "curves.h"
@@ -260,14 +260,17 @@ void run_about_box()
 	GdkPixbuf*  logo_image = gdk_pixbuf_new_from_file(find_resource("pixmaps/emergence.png"), NULL);
 
 	
-	about = gnome_about_new ("Emergence Editor", VERSION,
-				"Copyright \xc2\xa9 2001-2004 Jonathan Brown",
-				"Tool for creating Emergence maps",
-				(const char **)authors,
-				(const char **)documenters,
+	about = gtk_about_dialog_new ();
+	gtk_about_dialog_set_name (GTK_ABOUT_DIALOG (about), "Emergence Editor");
+	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (about), VERSION);
+	gtk_about_dialog_set_copyright (GTK_ABOUT_DIALOG (about), "Copyright \xc2\xa9 2001-2004 Jonathan Brown");
+	gtk_about_dialog_set_comments (GTK_ABOUT_DIALOG (about), "Tool for creating Emergence maps");
+	gtk_about_dialog_set_authors (GTK_ABOUT_DIALOG (about), (const char **)authors);
+	gtk_about_dialog_set_documenters (GTK_ABOUT_DIALOG (about), (const char **)documenters);
+	gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
 				strcmp (translator_credits, "translator_credits") != 0 ? 
-					(const char *)translator_credits : NULL,
-				logo_image);
+					(const char *)translator_credits : NULL);
+	gtk_about_dialog_set_logo (GTK_ABOUT_DIALOG (about), logo_image);
 
 
 	gtk_window_set_transient_for (GTK_WINDOW (about), 

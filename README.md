@@ -94,35 +94,56 @@ Custom software 2D renderer with:
 
 ## Building
 
-Each sub-project uses GNU Autotools:
+Requires [Meson](https://mesonbuild.com/) >= 0.56 and a C compiler.
 
 ```bash
-# Build the game (client + server)
-cd em-game
-./configure
-make
+meson setup builddir
+meson compile -C builddir
+```
 
-# Build the map editor
-cd em-tools
-./configure
-make
+To clean:
 
-# Build misc utilities
-cd misc
-./configure
-make
+```bash
+ninja -C builddir clean
+```
+
+Or to fully remove the build directory:
+
+```bash
+rm -rf builddir
+```
+
+To install:
+
+```bash
+meson install -C builddir
+```
+
+### Build Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `nonauthenticating` | false | Build server without key authentication (open/LAN play) |
+| `editor` | auto | Build the map editor (requires GTK+ 2.0) |
+
+```bash
+meson setup builddir -Dnonauthenticating=true -Deditor=enabled
 ```
 
 ### Dependencies
 
-- SDL (audio)
-- OpenSSL (key authentication)
-- zlib (compression)
-- libpng (image loading)
-- X11 / XRandr / DGA (video output)
-- ALSA (sound output)
-- GTK+ / GNOME / Glade (map editor only)
-- pthreads (multithreading)
+| Library | Used by | Notes |
+|---------|---------|-------|
+| SDL 1.2 | Client (audio) | Use `sdl12-compat` for SDL2 compatibility |
+| OpenSSL | Client + Server | Key authentication |
+| zlib | All | Compression |
+| libpng | All | Image loading |
+| X11 / XRandr | Client | Video output |
+| OpenGL / GLX | Client | Rendering |
+| ALSA | Client | Sound output |
+| libvorbis | Client | Ogg Vorbis audio |
+| pthreads | All | Multithreading |
+| GTK+ 2.0 | Editor only | UI framework |
 
 ## Running
 

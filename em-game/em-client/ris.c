@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../common/llist.h"
-#include "../common/stringbuf.h"
-#include "../gsub/gsub.h"
+#include "llist.h"
+#include "stringbuf.h"
+#include "gsub.h"
 #include "ris.h"
 
 

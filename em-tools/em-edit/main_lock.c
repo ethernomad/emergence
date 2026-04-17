@@ -14,7 +14,7 @@
 #include <pthread.h>
 
 
-#include "../gsub/gsub.h"
+#include "gsub.h"
 #include "worker_thread.h"
 
 

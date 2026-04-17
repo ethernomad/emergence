@@ -14,17 +14,17 @@
 #include <stdlib.h>
 #include <memory.h>
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../common/llist.h"
-#include "shared/network.h"
-#include "shared/cvar.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "llist.h"
+#include "network.h"
+#include "cvar.h"
 #include "ping.h"
 #include "game.h"
 #include "console.h"
 #include "tick.h"
-#include "shared/timer.h"
+#include "timer.h"
 
 struct ping_t
 {

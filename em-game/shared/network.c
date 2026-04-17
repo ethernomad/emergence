@@ -29,26 +29,27 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include "../../common/types.h"
-#include "../../common/minmax.h"
-#include "../../common/llist.h"
-#include "../../common/stringbuf.h"
-#include "../../common/buffer.h"
+#include "types.h"
+#include "minmax.h"
+#include "llist.h"
+#include "stringbuf.h"
+#include "buffer.h"
 #include "cvar.h"
 #include "timer.h"
 #include "alarm.h"
 #include "network.h"
 
-#include "../console.h"
-#include "../main.h"
+#include "console.h"
+#include "main.h"
 
 #ifdef EMSERVER
-#include "../game.h"
-#include "../entry.h"
+#include "game.h"
+#include "entry.h"
 #endif
 
 #ifdef EMCLIENT
-#include "../servers.h"
+#include "servers.h"
+extern int servers_info_pipe[2];
 #endif
 
 struct in_packet_ll_t
@@ -785,7 +786,7 @@ int all_connections_disconnected()
 void process_udp_data()
 {
 	struct packet_t packet;
-	size_t addr_size;
+	socklen_t addr_size;
 	struct sockaddr_in recv_addr;
 	int size, stop;
 	uint32_t index, rollover_index;

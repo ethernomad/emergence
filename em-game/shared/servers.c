@@ -28,10 +28,10 @@
 #include "alarm.h"
 #include "servers.h"
 #include "network.h"
-#include "../../common/user.h"
-#include "../../common/stringbuf.h"
-#include "../../common/llist.h"
-#include "../../common/resource.h"
+#include "user.h"
+#include "stringbuf.h"
+#include "llist.h"
+#include "resource.h"
 
 
 struct server_t *rumoured_servers = NULL;

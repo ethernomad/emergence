@@ -19,16 +19,16 @@
 #include <assert.h>
 
 #include <zlib.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #define USE_GDK_PIXBUF
 
-#include "../common/prefix.h"
+#include "prefix.h"
 
-#include "../common/llist.h"
-#include "../common/stringbuf.h"
-#include "../common/resource.h"
-#include "../gsub/gsub.h"
+#include "llist.h"
+#include "stringbuf.h"
+#include "resource.h"
+#include "gsub.h"
 #include "worker.h"
 #include "main_lock.h"
 #include "objects.h"

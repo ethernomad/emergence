@@ -18,7 +18,7 @@
 #include "../common/stringbuf.h"
 
 #ifdef EMGAME
-#include "../em-client/console.h"
+#include "console.h"
 #endif
 
 struct string_t *username = NULL, *home_dir = NULL, *emergence_home_dir = NULL;

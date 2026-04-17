@@ -23,9 +23,9 @@
 #include <errno.h>
 
 
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../common/user.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "user.h"
 #include "console.h"
 #include "key.h"
 #include "main.h"

@@ -34,13 +34,13 @@
 #include <X11/extensions/XShm.h>
 #include <X11/extensions/Xrandr.h>
 
-#include "../common/types.h"
-#include "../common/llist.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../gsub/gsub.h"
-#include "shared/timer.h"
-#include "shared/cvar.h"
+#include "types.h"
+#include "llist.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "gsub.h"
+#include "timer.h"
+#include "cvar.h"
 #include "console.h"
 #include "main.h"
 #include "entry.h"

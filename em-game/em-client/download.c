@@ -25,10 +25,10 @@
 #include <string.h>
 #include <errno.h>
 
-#include "../common/stringbuf.h"
-#include "../common/user.h"
-#include "../gsub/gsub.h"
-#include "shared/network.h"
+#include "stringbuf.h"
+#include "user.h"
+#include "gsub.h"
+#include "network.h"
 #include "game.h"
 #include "map.h"
 #include "render.h"

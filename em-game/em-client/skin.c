@@ -18,16 +18,16 @@
 
 #include <sys/stat.h>
 
-#include "../common/prefix.h"
+#include "prefix.h"
 
-#include "../common/resource.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../common/llist.h"
-#include "../common/user.h"
-#include "shared/network.h"
-#include "shared/sgame.h"
-#include "../gsub/gsub.h"
+#include "resource.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "llist.h"
+#include "user.h"
+#include "network.h"
+#include "sgame.h"
+#include "gsub.h"
 #include "entry.h"
 #include "skin.h"
 #include "console.h"

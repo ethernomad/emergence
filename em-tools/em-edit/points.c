@@ -18,14 +18,14 @@
 #include <math.h>
 #include <assert.h>
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <zlib.h>
 
-#include "../common/prefix.h"
+#include "prefix.h"
 
-#include "../common/llist.h"
-#include "../common/resource.h"
-#include "../gsub/gsub.h"
+#include "llist.h"
+#include "resource.h"
+#include "gsub.h"
 #include "conns.h"
 #include "bezier.h"
 #include "nodes.h"

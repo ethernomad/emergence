@@ -18,11 +18,11 @@
 #include <math.h>
 
 #include <zlib.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
 
-#include "../common/llist.h"
-#include "../common/stringbuf.h"
-#include "../common/inout.h"
+#include "llist.h"
+#include "stringbuf.h"
+#include "inout.h"
 #include "points.h"
 #include "lines.h"
 #include "interface.h"
@@ -193,7 +193,7 @@ void on_switch_checkbutton_toggled(GtkToggleButton *togglebutton, gpointer user_
 }
 
 
-void on_door_colorpicker_color_set(GnomeColorPicker *colorpicker, 
+void on_door_colorpicker_color_set(GtkWidget *colorpicker, 
 	guint red, guint green, guint blue, guint alpha, gpointer user_data)
 {
 	;
@@ -238,7 +238,7 @@ void on_door_index_spinbutton_value_changed(GtkEditable *editable, gpointer user
 }
 
 
-void on_switch_colorpicker_color_set(GnomeColorPicker *colorpicker, 
+void on_switch_colorpicker_color_set(GtkWidget *colorpicker, 
 	guint red, guint green, guint blue, guint alpha, gpointer user_data)
 {
 	;
@@ -309,9 +309,9 @@ void on_door_switch_properties_dialog_destroy(GtkObject *dialog, gpointer user_d
 	else
 		line->status &= ~LINE_STATUS_SWITCH;
 	
-	gnome_color_picker_get_i8(GNOME_COLOR_PICKER(g_object_get_data(G_OBJECT(dialog), 
-		"door_colorpicker")), 
-		&line->door_red, &line->door_green, &line->door_blue, &line->door_alpha);
+	{ GdkColor _c; gtk_color_button_get_color(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"door_colorpicker")), &_c); line->door_red=_c.red>>8; line->door_green=_c.green>>8; line->door_blue=_c.blue>>8; line->door_alpha=gtk_color_button_get_alpha(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"door_colorpicker")))>>8; }
 	
 	line->door_width = 
 		gtk_spin_button_get_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
@@ -338,9 +338,9 @@ void on_door_switch_properties_dialog_destroy(GtkObject *dialog, gpointer user_d
 	line->door_index = gtk_spin_button_get_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"door_index_spinbutton")));
 	
-	gnome_color_picker_get_i8(GNOME_COLOR_PICKER(g_object_get_data(G_OBJECT(dialog), 
-		"switch_colorpicker")), 
-		&line->switch_red, &line->switch_green, &line->switch_blue, &line->switch_alpha);
+	{ GdkColor _c; gtk_color_button_get_color(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"switch_colorpicker")), &_c); line->switch_red=_c.red>>8; line->switch_green=_c.green>>8; line->switch_blue=_c.blue>>8; line->switch_alpha=gtk_color_button_get_alpha(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"switch_colorpicker")))>>8; }
 	
 	line->switch_width = 
 		gtk_spin_button_get_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
@@ -529,9 +529,9 @@ void run_door_switch_properties_dialog(void *menu, struct line_t *line)
 			"door_checkbutton")), TRUE);
 	}
 
-	gnome_color_picker_set_i8(GNOME_COLOR_PICKER(g_object_get_data(G_OBJECT(dialog), 
-		"door_colorpicker")), 
-		line->door_red, line->door_green, line->door_blue, line->door_alpha);
+	{ GdkColor _c = {0, line->door_red<<8, line->door_green<<8, line->door_blue<<8}; gtk_color_button_set_color(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"door_colorpicker")), &_c); gtk_color_button_set_alpha(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"door_colorpicker")), line->door_alpha<<8); }
 	
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"door_width_spinbutton")), (gfloat)line->door_width);
@@ -567,9 +567,9 @@ void run_door_switch_properties_dialog(void *menu, struct line_t *line)
 			"switch_checkbutton")), TRUE);
 	}
 	
-	gnome_color_picker_set_i8(GNOME_COLOR_PICKER(g_object_get_data(G_OBJECT(dialog), 
-		"switch_colorpicker")), 
-		line->switch_red, line->switch_green, line->switch_blue, line->switch_alpha);
+	{ GdkColor _c = {0, line->switch_red<<8, line->switch_green<<8, line->switch_blue<<8}; gtk_color_button_set_color(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"switch_colorpicker")), &_c); gtk_color_button_set_alpha(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"switch_colorpicker")), line->switch_alpha<<8); }
 	
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"switch_width_spinbutton")), (gfloat)line->switch_width);

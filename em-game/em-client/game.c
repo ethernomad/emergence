@@ -22,23 +22,23 @@
 
 #include <zlib.h>
 
-#include "../common/prefix.h"
-#include "../common/resource.h"
+#include "prefix.h"
+#include "resource.h"
 
-#include "../common/types.h"
-#include "../common/minmax.h"
-#include "../common/llist.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../common/resource.h"
-#include "shared/cvar.h"
-#include "shared/network.h"
-#include "shared/fileinfo.h"
+#include "types.h"
+#include "minmax.h"
+#include "llist.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "resource.h"
+#include "cvar.h"
+#include "network.h"
+#include "fileinfo.h"
 #include "particles.h"
-#include "shared/sgame.h"
+#include "sgame.h"
 #include "rcon.h"
 #include "console.h"
-#include "../gsub/gsub.h"
+#include "gsub.h"
 #include "render.h"
 #include "main.h"
 #include "stars.h"
@@ -57,11 +57,11 @@
 #include "servers.h"
 
 #ifdef LINUX
-#include "shared/timer.h"
+#include "timer.h"
 #endif
 
 #ifdef WIN32
-#include "../common/win32/math.h"
+#include "win32/math.h"
 #endif
 
 
@@ -245,7 +245,7 @@ struct message_reader_t
 {
 	uint8_t type;
 	struct buffer_t *stream;
-	gzFile *gzdemo;
+	gzFile gzdemo;
 
 	uint8_t message_type;
 	uint32_t event_tick;

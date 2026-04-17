@@ -14,23 +14,23 @@
 #include <stdint.h>
 
 
-#include "../../common/types.h"
-#include "../../common/stringbuf.h"
-#include "../../common/user.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "user.h"
 #include "parse.h"
 #include "cvar.h"
-#include "../console.h"
+#include "console.h"
 
 #ifdef EMCLIENT
-#include "../control.h"
+#include "control.h"
 #endif
 
 #ifdef LINUX
-#include "../entry.h"
+#include "entry.h"
 #endif
 
 #ifdef WIN32
-#include "../nfcl/win32/entry.h"
+#include "nfcl/win32/entry.h"
 #endif
 
 int exec_config_file(char *filename)

@@ -17,9 +17,9 @@
 #include <string.h>
 
 #include "cvar.h"
-#include "../../common/types.h"
-#include "../../common/llist.h"
-#include "../../common/stringbuf.h"
+#include "types.h"
+#include "llist.h"
+#include "stringbuf.h"
 
 #ifdef LINUX
 #define stricmp strcasecmp 

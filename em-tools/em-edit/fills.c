@@ -19,16 +19,16 @@
 #include <assert.h>
 
 #include <zlib.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #define USE_GDK_PIXBUF
 
-#include "../common/llist.h"
-#include "../common/vertex.h"
-#include "../common/polygon.h"
-#include "../common/inout.h"
-#include "../common/stringbuf.h"
-#include "../gsub/gsub.h"
+#include "llist.h"
+#include "vertex.h"
+#include "polygon.h"
+#include "inout.h"
+#include "stringbuf.h"
+#include "gsub.h"
 #include "conns.h"
 #include "bezier.h"
 #include "nodes.h"
@@ -863,7 +863,7 @@ void update_fill_surface(struct fill_t *fill)		// always called when not working
 }
 
 
-void on_fill_solid_colorpicker_color_set(GnomeColorPicker *colorpicker, 
+void on_fill_solid_colorpicker_color_set(GtkWidget *colorpicker, 
 	guint red, guint green, guint blue, guint alpha, gpointer user_data)
 {
 	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(colorpicker));
@@ -1208,8 +1208,9 @@ void run_fill_properties_dialog(void *menu, struct fill_t *fill)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 			"texture_radiobutton")), TRUE);
 
-	gnome_color_picker_set_i8(GNOME_COLOR_PICKER(g_object_get_data(G_OBJECT(dialog), 
-		"solid_colorpicker")), fill->red, fill->green, fill->blue, fill->alpha);
+	{ GdkColor _c = {0, fill->red<<8, fill->green<<8, fill->blue<<8}; gtk_color_button_set_color(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"solid_colorpicker")), &_c); gtk_color_button_set_alpha(GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(dialog), 
+		"solid_colorpicker")), fill->alpha<<8); }
 	
 	if(fill->texture_filename)
 	{

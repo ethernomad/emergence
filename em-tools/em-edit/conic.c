@@ -17,8 +17,8 @@
 #include <math.h>
 #include <memory.h>
 
-#include "../common/llist.h"
-#include "../common/inout.h"
+#include "llist.h"
+#include "inout.h"
 #include "nodes.h"
 #include "conns.h"
 #include "conic.h"

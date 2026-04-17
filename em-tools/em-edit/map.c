@@ -15,14 +15,14 @@
 #include <stdint.h>
 #include <unistd.h>
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <zlib.h>
 
-#include "../common/stringbuf.h"
-#include "../common/user.h"
-#include "../common/rel2abs.h"
-#include "../common/abs2rel.h"
-#include "../gsub/gsub.h"
+#include "stringbuf.h"
+#include "user.h"
+#include "rel2abs.h"
+#include "abs2rel.h"
+#include "gsub.h"
 #include "nodes.h"
 #include "conns.h"
 #include "curves.h"

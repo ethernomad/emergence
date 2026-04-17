@@ -414,7 +414,7 @@ struct entity_t *new_entity(struct entity_t **entity0);
 struct entity_t *get_entity(struct entity_t *entity0, uint32_t index);
 void remove_entity(struct entity_t **entity0, struct entity_t *entity);
 
-#ifdef ZLIB_H
+#ifdef ZLIB_H_
 int read_spawn_point(gzFile file);
 int read_gravity_well(gzFile file);
 int read_teleporter(gzFile file);

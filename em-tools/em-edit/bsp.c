@@ -21,10 +21,10 @@
 
 #include <zlib.h>
 
-#include "../common/llist.h"
-#include "../common/minmax.h"
-#include "../common/inout.h"
-#include "../gsub/gsub.h"
+#include "llist.h"
+#include "minmax.h"
+#include "inout.h"
+#include "gsub.h"
 #include "nodes.h"
 #include "map.h"
 #include "conns.h"

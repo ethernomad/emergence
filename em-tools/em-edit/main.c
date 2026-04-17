@@ -16,13 +16,13 @@
 #include <unistd.h>
 #include <time.h>
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
-#include "../common/prefix.h"
+#include "prefix.h"
 
-#include "../common/minmax.h"
-#include "../common/user.h"
-#include "../gsub/gsub.h"
+#include "minmax.h"
+#include "user.h"
+#include "gsub.h"
 #include "interface.h"
 #include "map.h"
 #include "cameron.h"
@@ -256,10 +256,7 @@ void on_worker_callback(gpointer data, gint source, GdkInputCondition condition)
 
 int main(int argc, char *argv[])
 {
-	gnome_program_init("Emergence Editor", VERSION, LIBGNOMEUI_MODULE,
-		argc, argv,
-		GNOME_PARAM_APP_DATADIR, BR_DATADIR("/emergence"),
-		NULL);
+	gtk_init(&argc, &argv);
 	
 	init_user();
 	init_gsub();

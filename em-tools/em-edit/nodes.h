@@ -8,6 +8,8 @@
 #ifndef _INC_NODES
 #define _INC_NODES
 
+#include <zlib.h>
+
 struct sat_t
 {
 	float x, y;
@@ -96,10 +98,8 @@ void draw_width_sats();
 
 extern struct node_t *node0;
 
-#if defined ZLIB_H
 void gzwrite_nodes(gzFile file);
 int gzread_nodes(gzFile file);
-#endif
 
 void init_nodes();
 void kill_nodes();

@@ -122,19 +122,25 @@ int write_png_surface(struct surface_t *surface, char *filename);
 int write_raw_surface(struct surface_t *surface, char *filename);
 
 
-#ifdef ZLIB_H
+#include <zlib.h>
+
 struct surface_t *gzread_raw_surface(gzFile file);
 int gzwrite_raw_surface(gzFile file, struct surface_t *surface);
-#endif
 
 
 extern int (*gsub_callback)();
 
 
 
+#if defined(__i386__)
 void fb_update_mmx(void*, void*, int, int, int) __attribute__ ((cdecl));
 void bb_clear_mmx(void*, int, int) __attribute__ ((cdecl));
 void convert_16bit_to_32bit_mmx(void*, void*, int) __attribute__ ((cdecl));
+#elif defined(__x86_64__)
+void fb_update_mmx(void*, void*, int, int, int);
+void bb_clear_mmx(void*, int, int);
+void convert_16bit_to_32bit_mmx(void*, void*, int);
+#endif
 
 void init_gsub();
 void kill_gsub();

@@ -8,6 +8,7 @@
 #ifndef _INC_CURVES
 #define _INC_CURVES
 
+#include <zlib.h>
 
 struct curve_t
 {
@@ -68,10 +69,8 @@ struct curve_t *get_curve(struct conn_t *conn);
 void delete_all_curves();
 void remove_conn_from_its_curve(struct conn_t *conn);
 
-#if defined ZLIB_H
 void gzwrite_curves(gzFile file);
 int gzread_curves(gzFile file);
-#endif
 
 
 void run_curve_menu(struct curve_t *curve);

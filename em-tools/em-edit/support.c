@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #include "support.h"
 
@@ -53,8 +53,7 @@ create_pixmap                          (GtkWidget       *widget,
   if (!filename || !filename[0])
       return gtk_image_new ();
 
-  pathname = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_APP_PIXMAP,
-                                        filename, TRUE, NULL);
+  pathname = g_build_filename(PKGDATADIR, "pixmaps", filename, NULL);
   if (!pathname)
     {
       g_warning ("Couldn't find pixmap file: %s", filename);
@@ -77,8 +76,7 @@ create_pixbuf                          (const gchar     *filename)
   if (!filename || !filename[0])
       return NULL;
 
-  pathname = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_APP_PIXMAP,
-                                        filename, TRUE, NULL);
+  pathname = g_build_filename(PKGDATADIR, "pixmaps", filename, NULL);
 
   if (!pathname)
     {

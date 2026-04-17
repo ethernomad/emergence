@@ -17,14 +17,14 @@
 #include <string.h>
 #include <math.h>
 
-#include "../common/minmax.h"
-#include "../common/vertex.h"
-#include "../common/polygon.h"
-#include "../common/llist.h"
+#include "minmax.h"
+#include "vertex.h"
+#include "polygon.h"
+#include "llist.h"
 #include "gsub.h"
 
 #ifdef WIN32
-#include "../common/win32/math.h"
+#include "win32/math.h"
 #endif
 
 

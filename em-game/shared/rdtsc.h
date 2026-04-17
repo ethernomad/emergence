@@ -1,8 +1,21 @@
-/**
- * @file
- * @copyright 1998-2004 Jonathan Brown <jbrown@bluedroplet.com>
- * @license https://www.gnu.org/licenses/gpl-3.0.html
- * @homepage https://github.com/bluedroplet/emergence
- */
+#ifndef RDTSC_H
+#define RDTSC_H
 
-uint64_t rdtsc();
+#include <stdint.h>
+
+#if defined(__i386__) || defined(__x86_64__)
+
+static inline uint64_t rdtsc(void)
+{
+	unsigned int lo, hi;
+	__asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+	return ((uint64_t)hi << 32) | lo;
+}
+
+#else
+
+uint64_t rdtsc(void);
+
+#endif
+
+#endif

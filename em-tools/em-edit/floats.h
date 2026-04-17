@@ -5,6 +5,6 @@
  * @homepage https://github.com/bluedroplet/emergence
  */
 
-#ifdef ZLIB_H
+#include <zlib.h>
+
 void gzwrite_floating_images(gzFile file);
-#endif

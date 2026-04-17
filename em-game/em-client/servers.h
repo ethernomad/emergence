@@ -5,6 +5,8 @@
  * @homepage https://github.com/bluedroplet/emergence
  */
 
+#include "shared/servers.h"
+
 void init_servers();
 void kill_servers();
 extern int servers_info_pipe[2];

@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
+#include <string.h>
 
 #include <zlib.h>
 #include <png.h>
@@ -23,12 +24,12 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
 
-#include "../common/stringbuf.h"
-#include "../common/vertex.h"
+#include "stringbuf.h"
+#include "vertex.h"
 #include "gsub.h"
 
 #ifdef _WIN32
-#include "../common/math.h"
+#include "math.h"
 #endif
 
 

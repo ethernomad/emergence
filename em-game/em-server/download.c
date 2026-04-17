@@ -19,18 +19,19 @@
 #include <string.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/poll.h>
 #include <sys/socket.h>
 #include <sys/sendfile.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "../common/user.h"
-#include "../common/resource.h"
-#include "../common/llist.h"
-#include "shared/network.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "user.h"
+#include "resource.h"
+#include "llist.h"
+#include "network.h"
 #include "main.h"
 
 struct download_t

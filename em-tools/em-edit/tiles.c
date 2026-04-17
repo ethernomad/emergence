@@ -19,10 +19,10 @@
 #include <math.h>
 #include <assert.h>
 
-#include "../common/llist.h"
-#include "../common/vertex.h"
-#include "../common/polygon.h"
-#include "../gsub/gsub.h"
+#include "llist.h"
+#include "vertex.h"
+#include "polygon.h"
+#include "gsub.h"
 #include "nodes.h"
 #include "conns.h"
 #include "curves.h"

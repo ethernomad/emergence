@@ -20,12 +20,12 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include "../common/types.h"
-#include "shared/cvar.h"
-#include "../common/stringbuf.h"
-#include "shared/parse.h"
-#include "../common/user.h"
-#include "../gsub/gsub.h"
+#include "types.h"
+#include "cvar.h"
+#include "stringbuf.h"
+#include "parse.h"
+#include "user.h"
+#include "gsub.h"
 #include "rcon.h"
 #include "render.h"
 #include "entry.h"

@@ -5,7 +5,7 @@
  * @homepage https://github.com/bluedroplet/emergence
  */
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 
 void
@@ -15,7 +15,7 @@ on_rocket_launcher_properties_dialog_destroy
 
 void
 on_rocket_launcher_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -57,7 +57,7 @@ on_speedup_ramp_properties_dialog_destroy
 
 void
 on_speedup_ramp_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -132,7 +132,7 @@ on_minigun_properties_dialog_destroy   (GtkObject       *object,
 
 void
 on_minigun_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -173,7 +173,7 @@ on_plasma_cannon_properties_dialog_destroy
 
 void
 on_plasma_cannon_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -213,7 +213,7 @@ on_rails_properties_dialog_destroy     (GtkObject       *object,
                                         gpointer         user_data);
 
 void
-on_rails_texture_pixmapentry_activate  (GnomeFileEntry  *gnomefileentry,
+on_rails_texture_pixmapentry_activate  (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -254,7 +254,7 @@ on_shield_energy_properties_dialog_destroy
 
 void
 on_shield_energy_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -296,7 +296,7 @@ on_spawn_point_properties_dialog_destroy
 
 void
 on_spawn_point_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -372,7 +372,7 @@ on_gravity_well_properties_dialog_destroy
 
 void
 on_gravity_well_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -448,7 +448,7 @@ on_teleporter_properties_dialog_destroy
 
 void
 on_teleporter_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -553,7 +553,7 @@ on_door_switch_properties_dialog_destroy
                                         gpointer         user_data);
 
 void
-on_door_colorpicker_color_set          (GnomeColorPicker *colorpicker,
+on_door_colorpicker_color_set          (GtkWidget *colorpicker,
                                         guint            red,
                                         guint            green,
                                         guint            blue,
@@ -598,7 +598,7 @@ on_door_checkbutton_toggled            (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
 
 void
-on_switch_colorpicker_color_set        (GnomeColorPicker *colorpicker,
+on_switch_colorpicker_color_set        (GtkWidget *colorpicker,
                                         guint            red,
                                         guint            green,
                                         guint            blue,
@@ -649,7 +649,7 @@ on_fill_properties_dialog_destroy      (GtkObject       *object,
                                         gpointer         user_data);
 
 void
-on_fill_solid_colorpicker_color_set    (GnomeColorPicker *colorpicker,
+on_fill_solid_colorpicker_color_set    (GtkWidget *colorpicker,
                                         guint            red,
                                         guint            green,
                                         guint            blue,
@@ -661,7 +661,7 @@ on_fill_solid_radiobutton_toggled      (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
 
 void
-on_fill_texture_pixmapentry_activate   (GnomeFileEntry  *gnomefileentry,
+on_fill_texture_pixmapentry_activate   (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -768,7 +768,7 @@ on_wall_properties_dialog_destroy      (GtkObject       *object,
                                         gpointer         user_data);
 
 void
-on_wall_solid_colorpicker_color_set    (GnomeColorPicker *colorpicker,
+on_wall_solid_colorpicker_color_set    (GtkWidget *colorpicker,
                                         guint            red,
                                         guint            green,
                                         guint            blue,
@@ -780,7 +780,7 @@ on_wall_solid_radiobutton_toggled      (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
 
 void
-on_wall_texture_pixmapentry_activate   (GnomeFileEntry  *gnomefileentry,
+on_wall_texture_pixmapentry_activate   (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -913,7 +913,7 @@ on_end_node_properties_dialog_destroy  (GtkObject       *object,
 
 void
 on_end_node_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -1059,7 +1059,7 @@ on_crossover_node_blend_radiobutton_toggled
 
 void
 on_crossover_node_texture_pixmapentry_activate
-                                        (GnomeFileEntry  *gnomefileentry,
+                                        (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void
@@ -1285,7 +1285,7 @@ on_straight_through_node_angle_spinbutton_button_release_event
                                         gpointer         user_data);
 
 void
-on_wall_texture_pixmapentry_activate   (GnomeFileEntry  *gnomefileentry,
+on_wall_texture_pixmapentry_activate   (GtkWidget *gnomefileentry,
                                         gpointer         user_data);
 
 void

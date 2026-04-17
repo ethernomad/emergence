@@ -15,9 +15,9 @@
 #include <stdarg.h>
 #include <stdint.h>
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "buffer.h"
 #include "game.h"
 
 struct player_t *console_rcon = NULL;

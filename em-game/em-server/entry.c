@@ -19,12 +19,12 @@
 #include <argp.h>
 #include <pthread.h>
 
-#include "../common/types.h"
-#include "../common/stringbuf.h"
-#include "../common/buffer.h"
-#include "shared/timer.h"
-#include "shared/network.h"
-#include "shared/cvar.h"
+#include "types.h"
+#include "stringbuf.h"
+#include "buffer.h"
+#include "timer.h"
+#include "network.h"
+#include "cvar.h"
 #include "main.h"
 #include "game.h"
 #include "console.h"

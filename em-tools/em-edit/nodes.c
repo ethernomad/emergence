@@ -18,17 +18,17 @@
 #include <math.h>
 
 #include <zlib.h>
-#include <gnome.h>
+#include <gtk/gtk.h>
 
 #define USE_GDK_PIXBUF
 
-#include "../common/prefix.h"
+#include "prefix.h"
 
-#include "../common/llist.h"
-#include "../common/stringbuf.h"
-#include "../common/vertex.h"
-#include "../common/resource.h"
-#include "../gsub/gsub.h"
+#include "llist.h"
+#include "stringbuf.h"
+#include "vertex.h"
+#include "resource.h"
+#include "gsub.h"
 #include "nodes.h"
 #include "map.h"
 #include "conns.h"

@@ -14,9 +14,9 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "../common/types.h"
-#include "shared/cvar.h"
-#include "../gsub/gsub.h"
+#include "types.h"
+#include "cvar.h"
+#include "gsub.h"
 #include "game.h"
 #include "render.h"
 

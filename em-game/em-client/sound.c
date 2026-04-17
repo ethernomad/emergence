@@ -25,11 +25,11 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
-#include "../common/llist.h"
-#include "../common/minmax.h"
-#include "shared/timer.h"
-#include "shared/alarm.h"
-#include "shared/sgame.h"
+#include "llist.h"
+#include "minmax.h"
+#include "timer.h"
+#include "alarm.h"
+#include "sgame.h"
 #include "console.h"
 #include "entry.h"
 #include "tick.h"
