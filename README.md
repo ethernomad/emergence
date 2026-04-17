@@ -4,6 +4,8 @@ Fast-paced multiplayer top-down 2D arcade space-combat game.
 
 Players pilot craft in a space arena, pick up weapons, and battle for frags. Timed matches with a leaderboard determine the winner. Inspired by games like Subspace/Continuum.
 
+**[Video Demo](https://youtu.be/bnNoSMebDWk)**
+
 **Version:** 0.9  
 **Author:** Jonathan Brown \<jbrown@bluedroplet.com\>  
 **License:** GNU GPLv3
