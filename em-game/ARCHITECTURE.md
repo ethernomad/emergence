@@ -4,7 +4,7 @@ Emergence is a fast-paced multiplayer top-down arcade space-combat game. Players
 
 ## Architecture Overview
 
-Client-server model with an **authoritative server**. The server runs the game simulation at **200 Hz** (200 ticks/second), processing client input commands and broadcasting entity state changes to all connected clients. Clients run local prediction using the same shared physics code and render the scene.
+Client-server model with an **authoritative server**. The server derives game time at **200 Hz** (200 ticks/second) from the shared timer code, processes client input commands, and broadcasts entity state changes to all connected clients. Clients run local prediction using the same shared physics code and render the scene.
 
 ```
 ┌─────────────┐  UDP (custom reliable protocol)  ┌─────────────┐
@@ -34,7 +34,7 @@ em-game/
 ├── em-server/       Server executable — game loop, propagation, authentication
 ├── share/           Game data — maps, demos, sounds, skins, configs
 │   ├── stock-maps/        Compiled .cmap map files
-│   ├── stock-sounds/      WAV sound effects
+│   ├── stock-sounds/      Ogg Vorbis sound effects
 │   ├── stock-object-textures/  PNG textures for entities
 │   ├── stock-skins/       Player skin definitions
 │   ├── base-maps/         Base map resources
@@ -49,14 +49,13 @@ em-game/
 
 ## Build System
 
-Autotools-based (`./configure && make`). Key configure flags:
+Meson-based (`meson setup build && meson compile -C build`). Relevant options:
 
-- `--enable-nonauthenticating` — disables key authentication for LAN play (`-DNONAUTHENTICATING`)
-- `--enable-binreloc` — enables autopackage-compatible binary relocation (`-DENABLE_BINRELOC`)
+- `-Dnonauthenticating=true` — builds the server without public-key authentication (`-DNONAUTHENTICATING`)
 
-Client links: `libgsub.a`, `libshared.a`, `libcommon.a`, `-lssl -lcrypto -lSDL -lvorbisfile -lvorbis -logg -lpthread -lz -lpng12 -lX11 -lXext -lXrandr -lasound`
+Client links static `gsub`, `shared`, and `common` libraries plus SDL, OpenSSL/libcrypto, X11/Xext/Xrandr, OpenGL/GLU, ALSA, Vorbis/Ogg, zlib, libpng, libm, and pthreads.
 
-Server links: `libshared.a`, `libcommon.a`, `-lpthread -lz -lm -lssl -lcrypto`
+Server links static `shared` and `common` libraries plus OpenSSL/libcrypto, zlib, libm, and pthreads.
 
 ## Server Architecture
 
@@ -77,11 +76,11 @@ CONN_STATE_VIRGIN ──► CONN_STATE_AUTHENTICATING ──► CONN_STATE_VERIF
       (connect)              (key exchange)              (key verified)          (in game)
 ```
 
-Local connections (127.x.x.x) and private networks skip authentication unless `NONAUTHENTICATING` is disabled.
+Local connections and private-network connections skip authentication. Public Internet connections require authentication unless built with `NONAUTHENTICATING`.
 
 ### Game Loop
 
-Runs inside an alarm callback (`process_game_timer`) on a dedicated busy-wait thread calling registered listeners each tick:
+`process_game_timer()` runs from the shared alarm thread. That thread is a busy loop that repeatedly calls registered listeners; `update_game()` converts wall time into 200 Hz game ticks and catches up simulation work as needed:
 
 1. `tick_game()` → `s_tick_entities()` — shared physics for all entities
 2. `tick_player()` — per-player pulse events
@@ -91,7 +90,7 @@ Runs inside an alarm callback (`process_game_timer`) on a dedicated busy-wait th
 
 ## Client Architecture
 
-Entry point: `entry.c` — creates X11/GLX window, handles signals.
+Entry point: `entry.c` — initializes the client process, signal handling, and X11-based video path.
 
 ### Main Loop
 
@@ -297,14 +296,14 @@ Used for wall collision (circle and line walks) and railgun hit detection.
 
 ## Rendering Pipeline
 
-Entirely **software-based** using the `gsub` 2D rasterizer, output to screen via **OpenGL/GLX** as a pixel blit.
+Entirely **software-based** using the `gsub` 2D rasterizer, output to screen via X11 shared-memory blits.
 
 ```
 ┌────────────────────────────────────────────────┐
 │ clear_surface(s_backbuffer)                    │  16-bit RGB565 software buffer
 │ render_game()                                  │  Tiles, entities, effects
 │ render_servers() / render_console() / etc.     │  UI overlays
-│ update_frame_buffer()                          │  glDrawPixels() → glXSwapBuffers()
+│ update_frame_buffer()                          │  XShmPutImage() → XFlush()
 └────────────────────────────────────────────────┘
 ```
 
@@ -317,13 +316,12 @@ screeny = vid_height/2 - 1 - floor((worldy - viewy) * (vid_width / 1600.0))
 
 Reference resolution: 1600×1200. Non-native resolutions scale map tiles accordingly.
 
-### GL Setup
+### X11 Presentation
 
-- Creates fullscreen undecorated X11 window
-- Disables all OpenGL features (texturing, lighting, depth, dithering, blending)
-- Uses `glPixelZoom(1.0, -1.0)` for vertical flip
-- `glRasterPos2f(-1.0, +1.0)` for positioning
-- `glDrawPixels()` with `GL_UNSIGNED_SHORT_5_6_5`
+- Creates a fullscreen undecorated X11 window
+- Allocates an `XImage` via `XShmCreateImage()` and backs `s_backbuffer` with the shared-memory pixel buffer
+- Presents frames with `XShmPutImage()` followed by `XFlush()`
+- Uses XRandR to query and switch display modes
 
 ## Input System
 
@@ -348,21 +346,21 @@ Mouse axis_0 = roll       Mouse btn_0 = fire_rail
 ## Authentication
 
 - **Internet play**: OpenSSL-based challenge-response authentication requiring purchased keys
-- **LAN play**: Local (127.x.x.x) and private network connections bypass authentication
-- **`NONAUTHENTICATING` compile flag**: disables all key authentication (for open servers)
+- **LAN/private play**: Local and private-network connections bypass authentication
+- **`NONAUTHENTICATING` compile flag**: disables authentication for public connections as well
 
 ## Timer System
 
-- x86 `rdtsc` instruction for high-resolution timing
-- Calibrated via `/proc/cpuinfo` MHz reading
-- Tick rate: 200 Hz (`get_tick_from_wall_time()` converts RDTSC to 200 Hz ticks)
+- Uses `rdtsc` on x86 and a monotonic-clock fallback on other architectures
+- x86 builds calibrate timer frequency from `/proc/cpuinfo`
+- Tick rate: 200 Hz (`get_tick_from_wall_time()` converts elapsed counts to game ticks)
 - Wall time: `get_wall_time()` returns seconds as double
 
 ## Dependencies
 
 | Library | Client | Server | Purpose |
 |---------|--------|--------|---------|
-| OpenGL/GLX | ✓ | — | Display output (`glDrawPixels`) |
+| OpenGL/GLU | ✓ | — | Linked by the client build |
 | X11/Xrandr | ✓ | — | Window management, input, display modes |
 | SDL 1.2.7 | ✓ (static, audio-only) | — | Audio output |
 | zlib | ✓ | ✓ | Gzip compression (maps, demos) |

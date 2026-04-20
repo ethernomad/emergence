@@ -35,7 +35,7 @@ Defined as constants in `gsub.h:12-20`:
 | `SURFACE_ALPHAFLOATS` | 7 | none | 1 float/pixel |
 | `SURFACE_FLOATSALPHAFLOATS` | 8 | 3 floats/pixel (RGB) | 1 float/pixel |
 
-RGB data is stored in BGR memory order (blue at lowest address). The pitch helpers (`get_pitch`, `get_alpha_pitch`, `get_size`, `get_alpha_size`) in `surfaces.c:220-305` compute buffer sizes and strides for each format.
+`SURFACE_24BIT` and `SURFACE_24BITALPHA8BIT` store bytes in RGB order. The padded `SURFACE_24BITPADDING8BIT` paths often write bytes as BGRX to match the X11 framebuffer layout used by the client/editor. The pitch helpers (`get_pitch`, `get_alpha_pitch`, `get_size`, `get_alpha_size`) in `surfaces.c` compute buffer sizes and strides for each format.
 
 ### Surface Lifecycle
 
@@ -62,7 +62,7 @@ Built by `make_lookup_tables()` in `gsub.c:60-167`:
 | `vid_greenalphalookup` | 32768 bytes | `(g6 << 8) \| alpha` | Green channel alpha blend result (6-bit, shifted) |
 | `vid_bluealphalookup` | 16384 bytes | `(b5 << 8) \| alpha` | Blue channel alpha blend result (5-bit, in position) |
 
-Division uses banker's rounding: the remainder `q = r % 255` is compared to 128; values >= 128 round up.
+Division uses simple half-up rounding: the remainder `q = r % 255` is compared to 128; values >= 128 round up.
 
 ### Blend Formula
 
@@ -106,7 +106,7 @@ The union fields allow `blit_params_t` to serve both rect/surface blitting and l
 
 The blit operation dispatches through a two-level switch on `(source_format, dest_format)`. For each combination that's supported, a format-specific C function is called (e.g., `surface_alpha_blit_888A8_565_c` for blitting a 24-bit+alpha source onto a 16-bit destination with global alpha).
 
-For performance-critical paths (rect fill, alpha rect, surface blit, alpha surface blit, pixel alpha plot), **function pointers** default to the C implementations but can be swapped to MMX/x86 assembly versions at runtime:
+For performance-critical paths (rect fill, alpha rect, surface blit, alpha surface blit, pixel alpha plot), `blit_ops.c` exposes function pointers that currently default to the C implementations:
 
 ```c
 // blit_ops.c:887-926
@@ -150,7 +150,7 @@ The top-level `draw_line()` (`line.c:502-583`) clips coordinates against the des
 
 ### Text Rendering
 
-`text.c` provides a bitmap font system. `init_text()` loads `smallfont.png` (a monospaced 8-pixel-wide font atlas) and populates a per-character width table (`charlengths[256]`).
+`text.c` provides a bitmap font system. `init_text()` loads `smallfont.png` and populates a per-character width table (`charlengths[256]`), so text rendering is variable-width even though glyphs are sourced from fixed 8-pixel cells in the atlas.
 
 Three rendering functions:
 - `blit_text()` — left-aligned
@@ -220,7 +220,7 @@ Seven `.S` files provide x86/MMX hand-optimized routines:
 | `fb_update_mmx.S` | `fb_update_mmx` | Framebuffer update/copy using MMX |
 | `surface_blit_mmx.S` | `surface_blit_mmx` | Non-alpha surface blit using MMX |
 
-These are declared with `__attribute__((cdecl))` in `gsub.h:135-137` and are intended to replace the C function pointers at runtime for MMX-capable CPUs. The C fallbacks (`_c` suffix) serve as the default implementations.
+These are declared with `__attribute__((cdecl))` in `gsub.h`. The C fallbacks (`_c` suffix) are the active implementations in the current tree; the assembly files exist as optional optimized routines rather than a fully wired runtime-dispatch path.
 
 ## Initialization and Teardown
 

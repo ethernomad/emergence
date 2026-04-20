@@ -139,7 +139,7 @@ meson setup builddir -Dnonauthenticating=true -Deditor=enabled
 | zlib | All | Compression |
 | libpng | All | Image loading |
 | X11 / XRandr | Client | Video output |
-| OpenGL / GLX | Client | Rendering |
+| OpenGL / GLU | Client | Linked by the client build |
 | ALSA | Client | Sound output |
 | libvorbis | Client | Ogg Vorbis audio |
 | pthreads | All | Multithreading |

@@ -6,39 +6,28 @@ em-tools is the tooling package for Emergence, a 2D multiplayer space combat gam
 
 ## 1. Build System
 
-em-tools uses GNU Autotools. `configure.in` declares the project as `em-tools 0.9` and depends on `libgnomeui-2.0`, `zlib`, `libpng`, and `pthread`.
+em-tools is built from the repository's top-level Meson project. `em-tools/meson.build` builds the editor when GTK+ 2.0 is available and the `editor` feature is enabled.
 
 ### Sub-projects
 
 | Directory | Output | Status |
 |-----------|--------|--------|
-| `em-edit/` | `em-edit` binary | Active |
-| `em-skin/` | `em-skin` binary | Disabled (commented out in `configure.in`) |
-| `gsub/` | `libgsub.a` | Static library, symlinked sources |
-| `common/` | `libcommon.a` | Static library, symlinked sources |
+| `em-edit/` | `em-edit` binary | Built when `gtk+-2.0` is available |
+| `em-skin/` | source only | Present in tree, not built by Meson |
+| `gsub/` | `libgsub_tools.a` | Static library shared with the editor build |
+| `common/` | `libcommon_tools.a` | Static library shared with the editor build |
 | `pixmaps/` | `emergence.png` | Desktop icon |
 | `desktop/` | `em-edit.desktop` | Freedesktop .desktop file |
 | `share/` | PNG/SVG assets | Splash screen, node/point icons, stock textures |
 
-### Symlink Pattern
+### Library Split
 
-`gsub/` and `common/` sources are not duplicated here. Each `Makefile.am` symlinks from the canonical copies in the parent repository:
-
-```makefile
-$(libgsub_a_SOURCES):
-    ln -s ../../gsub/$@
-
-$(libcommon_a_SOURCES):
-    ln -s ../../common/$@
-```
-
-This allows each sub-project to compile with its own flags (e.g., `em-edit` adds `@GNOME_CFLAGS@` and `-DUSE_GDK_PIXBUF` while `em-skin` does not).
+The editor links against Meson-built static libraries from the top-level `gsub/` and `common/` directories. The tools-specific gsub library is compiled with `-DUSE_GDK_PIXBUF`, while the common library is shared with the rest of the tree.
 
 ### Link Chain
 
 ```
-em-edit:  libcommon.a ← libgsub.a ← em-edit objects ← @GNOME_LIBS@ -lm -lpthread -lz -lpng12
-em-skin:  libcommon.a ← libgsub.a ← em-skin objects -lz -lpng
+em-edit: libcommon_tools.a + libgsub_tools.a + em-edit objects + GTK2 + zlib + libpng + libm + pthread
 ```
 
 For the internal architecture of `libcommon.a` and `libgsub.a`, see [`../../common/ARCHITECTURE.md`](../common/ARCHITECTURE.md) and [`../../gsub/ARCHITECTURE.md`](../gsub/ARCHITECTURE.md).
@@ -269,7 +258,7 @@ Three components cooperate:
    - `gsub_callback` is set to `check_stop_callback()`, allowing long-running gsub operations (resampling, rotation) to be interrupted when the user modifies the map
 
 3. **`main_lock.c`** — A `pthread_mutex_t` that serializes access to shared data structures:
-   - The GTK thread holds the lock during normal operation
+   - The GTK thread acquires the lock when it needs to stop or coordinate with the worker; it is not held continuously
    - The worker thread periodically calls `worker_try_enter_main_lock()` (via `gsub_callback`) to check if it should stop
    - For expensive operations (surface rotation, resizing), `leave_main_lock_and_rotate_surface()` and `leave_main_lock_and_resize_surface()` duplicate the surface, release the lock, perform the operation lock-free, then return the result
 
@@ -325,7 +314,7 @@ This zero-copy mapping means all gsub drawing operations write directly into the
 A Binary Space Partition tree provides spatial indexing for two purposes:
 
 1. **Interactive hit testing** — `get_curve_bsp()`, `get_node_bsp()`, `get_fill_bsp()` use the UI BSP tree to quickly find entities under the mouse cursor
-2. **Map compilation** — The compiled BSP tree is written to the `.emap` output file for the game engine
+2. **Map compilation** — The compiled BSP tree is written to the `.cmap` output file for the game engine
 
 BSP tree lines (`bsp_line_t`) carry typed references to curves, nodes, or fills on each side. The tree is built using the `inout()` half-plane test from `common/inout.c`. Two separate trees exist: the **UI BSP** (fast, for hit testing) and the **compile BSP** (complete, for output).
 
@@ -358,7 +347,7 @@ Property editors and dialogs are built with **Glade** (`em-edit.glade`). `glade-
 
 ### Map Save/Load
 
-Maps are saved as gzip-compressed files (`.map`) using `gzwrite_*`/`gzread_*` functions from gsub and common. The format writes each entity type sequentially: curves, nodes, connections, points, fills, lines, objects, and BSP tree. A compiled version (`.emap`) is produced by `compile()` and placed in `~/.emergence/maps/`.
+Maps are saved as gzip-compressed files (`.map`) using `gzwrite_*`/`gzread_*` functions from gsub and common. The save file writes entities in this order: nodes, connections, curves, points, fills, lines, and objects. The BSP tree is rebuilt after load rather than stored in the `.map` file. A compiled version (`.cmap`) is produced by `compile()` and placed in `~/.emergence/maps/`.
 
 File paths for textures are stored as relative paths (via `abs2rel`/`rel2abs` from `common/`) so maps are portable.
 
@@ -366,7 +355,7 @@ File paths for textures are stored as relative paths (via `abs2rel`/`rel2abs` fr
 
 ## 3. em-skin — Skin Packager
 
-A CLI tool that reads PNG textures from a named directory and writes a gzip-compressed `.skin` file. Currently disabled in `configure.in`.
+A CLI tool that reads PNG textures from a named directory and writes a gzip-compressed `.skin` file. The source remains in the tree, but it is not currently built by Meson.
 
 Usage: `em-skin <directory>`
 
@@ -378,7 +367,7 @@ For each directory argument, it reads:
 
 Each is loaded as a 24-bit+8-bit-alpha surface via `read_png_surface_as_24bitalpha8bit()` and written with `gzwrite_raw_surface()`. The output file is `<directory>.skin` compressed at level 9.
 
-em-skin depends only on `libgsub.a`, `libcommon.a`, zlib, and libpng — no GTK/GNOME dependency.
+em-skin depends only on gsub/common helpers, zlib, and libpng — no GTK/GNOME dependency.
 
 ---
 
