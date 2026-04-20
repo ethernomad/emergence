@@ -37,14 +37,10 @@ em-game/
 │   ├── stock-sounds/      Ogg Vorbis sound effects
 │   ├── stock-object-textures/  PNG textures for entities
 │   ├── stock-skins/       Player skin definitions
-│   ├── base-maps/         Base map resources
 │   └── demos/             Recorded gameplay demos
 ├── pixmaps/         Desktop icon (emergence.png)
 ├── desktop/         .desktop files for client and server
-├── configure.in     Autotools configuration
-├── Makefile.am      Top-level automake file
-├── acinclude.m4     Custom m4 macros (binreloc, nonauthenticating)
-└── build-external-libs  Script to build SDL 1.2.7 as static audio-only lib
+└── meson.build       Meson build rules for the client/server targets and assets
 ```
 
 ## Build System
@@ -53,9 +49,13 @@ Meson-based (`meson setup build && meson compile -C build`). Relevant options:
 
 - `-Dnonauthenticating=true` — builds the server without public-key authentication (`-DNONAUTHENTICATING`)
 
+The build generates `share/stock-sounds/*.ogg` from the checked-in `.wav` sources using `oggenc` when available, or `ffmpeg` as a fallback, then installs those generated files under `${datadir}/emergence/stock-sounds`.
+
 Client links static `gsub`, `shared`, and `common` libraries plus SDL, OpenSSL/libcrypto, X11/Xext/Xrandr, OpenGL/GLU, ALSA, Vorbis/Ogg, zlib, libpng, libm, and pthreads.
 
 Server links static `shared` and `common` libraries plus OpenSSL/libcrypto, zlib, libm, and pthreads.
+
+The client's server-browser cache is stored in `~/.emergence/rumoured.client`; it is not seeded from an installed data file.
 
 ## Server Architecture
 

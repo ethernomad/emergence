@@ -77,6 +77,24 @@ struct point_t *defining_fill_end_point;
 
 struct fill_t *fill0 = NULL;
 
+static gchar *get_texture_filename(GtkWidget *chooser)
+{
+	return gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(chooser));
+}
+
+static void set_texture_filename(GtkWidget *chooser, struct string_t *filename)
+{
+	if(!filename)
+	{
+		gtk_file_chooser_unselect_all(GTK_FILE_CHOOSER(chooser));
+		return;
+	}
+
+	struct string_t *string = arb_rel2abs(filename->text, map_path->text);
+	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(chooser), string->text);
+	free_string(string);
+}
+
 
 int add_fill_pointer(struct fill_pointer_t **fillp0, struct fill_t *fill)
 {
@@ -863,18 +881,19 @@ void update_fill_surface(struct fill_t *fill)		// always called when not working
 }
 
 
-void on_fill_solid_colorpicker_color_set(GtkWidget *colorpicker, 
-	guint red, guint green, guint blue, guint alpha, gpointer user_data)
+void on_fill_solid_colorpicker_color_set(GtkColorButton *colorpicker, gpointer user_data)
 {
 	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(colorpicker));
 	struct fill_t *fill = g_object_get_data(G_OBJECT(dialog), "fill");
+	GdkColor color;
 	
 	stop_working();
 	
-	fill->red = red >> 8;
-	fill->green = green >> 8;
-	fill->blue = blue >> 8;
-	fill->alpha = alpha >> 8;
+	gtk_color_button_get_color(colorpicker, &color);
+	fill->red = color.red >> 8;
+	fill->green = color.green >> 8;
+	fill->blue = color.blue >> 8;
+	fill->alpha = gtk_color_button_get_alpha(colorpicker) >> 8;
 	
 	invalidate_fill(fill);
 	update_client_area();
@@ -1011,19 +1030,19 @@ void on_fill_texture_radiobutton_toggled(GtkToggleButton *togglebutton, gpointer
 }
 
 
-void on_fill_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_fill_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
-	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(editable));
+	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(chooser));
 	struct fill_t *fill = g_object_get_data(G_OBJECT(dialog), "fill");
 		
 	stop_working();
 	
 	free_string(fill->texture_filename);
+	fill->texture_filename = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	fill->texture_filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+		fill->texture_filename = arb_abs2rel(strval, map_path->text);
 	
 	g_free(strval);
 	
@@ -1214,8 +1233,8 @@ void run_fill_properties_dialog(void *menu, struct fill_t *fill)
 	
 	if(fill->texture_filename)
 	{
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), 
-			"texture_entry")), fill->texture_filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), 
+			"texture_entry")), fill->texture_filename);
 	}
 	
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(dialog), 

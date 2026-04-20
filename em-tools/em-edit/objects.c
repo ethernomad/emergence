@@ -64,6 +64,24 @@ struct surface_t *working_object_surface;
 
 int object_scale_job;
 
+static gchar *get_texture_filename(GtkWidget *chooser)
+{
+	return gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(chooser));
+}
+
+static void set_texture_filename(GtkWidget *chooser, struct string_t *filename)
+{
+	if(!filename)
+	{
+		gtk_file_chooser_unselect_all(GTK_FILE_CHOOSER(chooser));
+		return;
+	}
+
+	struct string_t *string = arb_rel2abs(filename->text, map_path->text);
+	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(chooser), string->text);
+	free_string(string);
+}
+
 #define OBJECT_SCALE_JOB_SPAWN_POINT	0
 #define OBJECT_SCALE_JOB_TELEPORTER		1
 #define OBJECT_SCALE_JOB_GRAVITY_WELL	2
@@ -390,7 +408,7 @@ void on_plasma_cannon_texture_checkbutton_toggled(GtkToggleButton *togglebutton,
 }
 
 
-void on_plasma_cannon_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_plasma_cannon_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
 	stop_working();
 
@@ -400,18 +418,19 @@ void on_plasma_cannon_texture_entry_changed(GtkEditable *editable, gpointer user
 	free_surface(dynamic_objects[OBJECTTYPE_PLASMACANNON].texture);
 	dynamic_objects[OBJECTTYPE_PLASMACANNON].texture = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	dynamic_objects[OBJECTTYPE_PLASMACANNON].filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+	{
+		dynamic_objects[OBJECTTYPE_PLASMACANNON].filename = arb_abs2rel(strval, map_path->text);
+		
+		struct string_t *string = arb_rel2abs(dynamic_objects[OBJECTTYPE_PLASMACANNON].filename->text, 
+			map_path->text);
+		dynamic_objects[OBJECTTYPE_PLASMACANNON].texture = 
+			read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
+		free_string(string);
+	}
 	
 	g_free(strval);
-	
-	struct string_t *string = arb_rel2abs(dynamic_objects[OBJECTTYPE_PLASMACANNON].filename->text, 
-		map_path->text);
-	dynamic_objects[OBJECTTYPE_PLASMACANNON].texture = 
-		read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
-	free_string(string);
 	
 	invalidate_object_type(OBJECTTYPE_PLASMACANNON);
 	
@@ -499,8 +518,8 @@ void run_plasma_cannon_properties_dialog(void *menu, struct object_t *object)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(texture_checkbutton), TRUE);
 		
 	if(dynamic_objects[OBJECTTYPE_PLASMACANNON].filename)
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
-			dynamic_objects[OBJECTTYPE_PLASMACANNON].filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
+			dynamic_objects[OBJECTTYPE_PLASMACANNON].filename);
 	
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"plasmas_spinbutton")), (gfloat)object->plasma_cannon_data.plasmas);
@@ -538,7 +557,7 @@ void on_minigun_texture_checkbutton_toggled(GtkToggleButton *togglebutton, gpoin
 }
 
 
-void on_minigun_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_minigun_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
 	stop_working();
 
@@ -548,18 +567,19 @@ void on_minigun_texture_entry_changed(GtkEditable *editable, gpointer user_data)
 	free_surface(dynamic_objects[OBJECTTYPE_MINIGUN].texture);
 	dynamic_objects[OBJECTTYPE_MINIGUN].texture = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	dynamic_objects[OBJECTTYPE_MINIGUN].filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+	{
+		dynamic_objects[OBJECTTYPE_MINIGUN].filename = arb_abs2rel(strval, map_path->text);
+		
+		struct string_t *string = 
+			arb_rel2abs(dynamic_objects[OBJECTTYPE_MINIGUN].filename->text, map_path->text);
+		dynamic_objects[OBJECTTYPE_MINIGUN].texture = 
+			read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
+		free_string(string);
+	}
 	
 	g_free(strval);
-	
-	struct string_t *string = 
-		arb_rel2abs(dynamic_objects[OBJECTTYPE_MINIGUN].filename->text, map_path->text);
-	dynamic_objects[OBJECTTYPE_MINIGUN].texture = 
-		read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
-	free_string(string);
 	
 	invalidate_object_type(OBJECTTYPE_MINIGUN);
 	
@@ -623,8 +643,8 @@ void run_minigun_properties_dialog(void *menu, struct object_t *object)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(texture_checkbutton), TRUE);
 		
 	if(dynamic_objects[OBJECTTYPE_MINIGUN].filename)
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
-			dynamic_objects[OBJECTTYPE_MINIGUN].filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
+			dynamic_objects[OBJECTTYPE_MINIGUN].filename);
 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"bullets_spinbutton")), (gfloat)object->minigun_data.bullets);
@@ -663,7 +683,7 @@ void on_rocket_launcher_texture_checkbutton_toggled(GtkToggleButton *togglebutto
 }
 
 
-void on_rocket_launcher_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_rocket_launcher_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
 	stop_working();
 
@@ -673,19 +693,20 @@ void on_rocket_launcher_texture_entry_changed(GtkEditable *editable, gpointer us
 	free_surface(dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].texture);
 	dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].texture = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].filename = 
-		arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+	{
+		dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].filename = 
+			arb_abs2rel(strval, map_path->text);
+		
+		struct string_t *string = arb_rel2abs(
+			dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].filename->text, map_path->text);
+		dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].texture = 
+			read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
+		free_string(string);
+	}
 	
 	g_free(strval);
-	
-	struct string_t *string = arb_rel2abs(
-		dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].filename->text, map_path->text);
-	dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].texture = 
-		read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
-	free_string(string);
 	
 	invalidate_object_type(OBJECTTYPE_ROCKETLAUNCHER);
 	
@@ -759,8 +780,8 @@ void run_rocket_launcher_properties_dialog(void *menu, struct object_t *object)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(texture_checkbutton), TRUE);
 		
 	if(dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].filename)
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
-			dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
+			dynamic_objects[OBJECTTYPE_ROCKETLAUNCHER].filename);
 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"rockets_spinbutton")), (gfloat)object->rocket_launcher_data.rockets);
@@ -798,7 +819,7 @@ void on_rails_texture_checkbutton_toggled(GtkToggleButton *togglebutton, gpointe
 }
 
 
-void on_rails_texture_pixmapentry_changed(GtkEditable *editable, gpointer user_data)
+void on_rails_texture_pixmapentry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
 	stop_working();
 
@@ -808,18 +829,19 @@ void on_rails_texture_pixmapentry_changed(GtkEditable *editable, gpointer user_d
 	free_surface(dynamic_objects[OBJECTTYPE_RAILS].texture);
 	dynamic_objects[OBJECTTYPE_RAILS].texture = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	dynamic_objects[OBJECTTYPE_RAILS].filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+	{
+		dynamic_objects[OBJECTTYPE_RAILS].filename = arb_abs2rel(strval, map_path->text);
+		
+		struct string_t *string = arb_rel2abs(dynamic_objects[OBJECTTYPE_RAILS].filename->text, 
+			map_path->text);
+		dynamic_objects[OBJECTTYPE_RAILS].texture = 
+			read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
+		free_string(string);
+	}
 	
 	g_free(strval);
-	
-	struct string_t *string = arb_rel2abs(dynamic_objects[OBJECTTYPE_RAILS].filename->text, 
-		map_path->text);
-	dynamic_objects[OBJECTTYPE_RAILS].texture = 
-		read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
-	free_string(string);
 	
 	invalidate_object_type(OBJECTTYPE_RAILS);
 	
@@ -882,8 +904,8 @@ void run_rails_properties_dialog(void *menu, struct object_t *object)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(texture_checkbutton), TRUE);
 	
 	if(dynamic_objects[OBJECTTYPE_RAILS].filename)
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
-			dynamic_objects[OBJECTTYPE_RAILS].filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
+			dynamic_objects[OBJECTTYPE_RAILS].filename);
 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"quantity_spinbutton")), (gfloat)object->rails_data.quantity);
@@ -921,7 +943,7 @@ void on_shield_energy_texture_checkbutton_toggled(GtkToggleButton *togglebutton,
 }
 
 
-void on_shield_energy_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_shield_energy_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
 	stop_working();
 
@@ -931,18 +953,19 @@ void on_shield_energy_texture_entry_changed(GtkEditable *editable, gpointer user
 	free_surface(dynamic_objects[OBJECTTYPE_SHIELDENERGY].texture);
 	dynamic_objects[OBJECTTYPE_SHIELDENERGY].texture = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	dynamic_objects[OBJECTTYPE_SHIELDENERGY].filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+	{
+		dynamic_objects[OBJECTTYPE_SHIELDENERGY].filename = arb_abs2rel(strval, map_path->text);
+		
+		struct string_t *string = arb_rel2abs(dynamic_objects[OBJECTTYPE_SHIELDENERGY].filename->text, 
+			map_path->text);
+		dynamic_objects[OBJECTTYPE_SHIELDENERGY].texture = 
+			read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
+		free_string(string);
+	}
 	
 	g_free(strval);
-	
-	struct string_t *string = arb_rel2abs(dynamic_objects[OBJECTTYPE_SHIELDENERGY].filename->text, 
-		map_path->text);
-	dynamic_objects[OBJECTTYPE_SHIELDENERGY].texture = 
-		read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
-	free_string(string);
 	
 	invalidate_object_type(OBJECTTYPE_SHIELDENERGY);
 	
@@ -1006,8 +1029,8 @@ void run_shield_energy_properties_dialog(void *menu, struct object_t *object)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(texture_checkbutton), TRUE);
 		
 	if(dynamic_objects[OBJECTTYPE_SHIELDENERGY].filename)
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
-			dynamic_objects[OBJECTTYPE_SHIELDENERGY].filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
+			dynamic_objects[OBJECTTYPE_SHIELDENERGY].filename);
 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"energy_spinbutton")), (gfloat)object->shield_energy_data.energy * 100.0);
@@ -1047,9 +1070,9 @@ void on_spawn_point_texture_checkbutton_toggled(GtkToggleButton *togglebutton, g
 }
 
 
-void on_spawn_point_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_spawn_point_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
-	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(editable));
+	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(chooser));
 	struct object_t *object = g_object_get_data(G_OBJECT(dialog), "object");
 
 	stop_working();
@@ -1060,18 +1083,19 @@ void on_spawn_point_texture_entry_changed(GtkEditable *editable, gpointer user_d
 	free_surface(object->spawn_point_data.texture_pre_surface);
 	object->spawn_point_data.texture_pre_surface = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	object->spawn_point_data.texture_filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+	{
+		object->spawn_point_data.texture_filename = arb_abs2rel(strval, map_path->text);
+		
+		struct string_t *string = arb_rel2abs(object->spawn_point_data.texture_filename->text, 
+			map_path->text);
+		object->spawn_point_data.texture_pre_surface = 
+			read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
+		free_string(string);
+	}
 	
 	g_free(strval);
-	
-	struct string_t *string = arb_rel2abs(object->spawn_point_data.texture_filename->text, 
-		map_path->text);
-	object->spawn_point_data.texture_pre_surface = 
-		read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
-	free_string(string);
 	
 	invalidate_object(object);
 	
@@ -1167,8 +1191,8 @@ void run_spawn_point_properties_dialog(void *menu, struct object_t *object)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(texture_checkbutton), TRUE);
 		
 	if(object->spawn_point_data.texture_filename)
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
-			object->spawn_point_data.texture_filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
+			object->spawn_point_data.texture_filename);
 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"width_spinbutton")), (gfloat)object->spawn_point_data.width);
@@ -1214,9 +1238,9 @@ void on_speedup_ramp_texture_checkbutton_toggled(GtkToggleButton *togglebutton, 
 }
 
 
-void on_speedup_ramp_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_speedup_ramp_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
-	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(editable));
+	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(chooser));
 	struct object_t *object = g_object_get_data(G_OBJECT(dialog), "object");
 
 	stop_working();
@@ -1227,18 +1251,19 @@ void on_speedup_ramp_texture_entry_changed(GtkEditable *editable, gpointer user_
 	free_surface(object->speedup_ramp_data.texture_pre_surface);
 	object->speedup_ramp_data.texture_pre_surface = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	object->speedup_ramp_data.texture_filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+	{
+		object->speedup_ramp_data.texture_filename = arb_abs2rel(strval, map_path->text);
+		
+		struct string_t *string = arb_rel2abs(object->speedup_ramp_data.texture_filename->text, 
+			map_path->text);
+		object->speedup_ramp_data.texture_pre_surface = 
+			read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
+		free_string(string);
+	}
 	
 	g_free(strval);
-	
-	struct string_t *string = arb_rel2abs(object->speedup_ramp_data.texture_filename->text, 
-		map_path->text);
-	object->speedup_ramp_data.texture_pre_surface = 
-		read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
-	free_string(string);
 	
 	invalidate_object(object);
 	
@@ -1334,8 +1359,8 @@ void run_speedup_ramp_properties_dialog(void *menu, struct object_t *object)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(texture_checkbutton), TRUE);
 	
 	if(object->speedup_ramp_data.texture_filename)
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
-			object->speedup_ramp_data.texture_filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
+			object->speedup_ramp_data.texture_filename);
 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"width_spinbutton")), (gfloat)object->speedup_ramp_data.width);
@@ -1382,9 +1407,9 @@ void on_teleporter_texture_checkbutton_toggled(GtkToggleButton *togglebutton, gp
 }
 
 
-void on_teleporter_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_teleporter_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
-	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(editable));
+	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(chooser));
 	struct object_t *object = g_object_get_data(G_OBJECT(dialog), "object");
 
 	stop_working();
@@ -1395,18 +1420,19 @@ void on_teleporter_texture_entry_changed(GtkEditable *editable, gpointer user_da
 	free_surface(object->teleporter_data.texture_pre_surface);
 	object->teleporter_data.texture_pre_surface = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	object->teleporter_data.texture_filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+	{
+		object->teleporter_data.texture_filename = arb_abs2rel(strval, map_path->text);
+		
+		struct string_t *string = arb_rel2abs(object->teleporter_data.texture_filename->text, 
+			map_path->text);
+		object->teleporter_data.texture_pre_surface = 
+			read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
+		free_string(string);
+	}
 	
 	g_free(strval);
-	
-	struct string_t *string = arb_rel2abs(object->teleporter_data.texture_filename->text, 
-		map_path->text);
-	object->teleporter_data.texture_pre_surface = 
-		read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
-	free_string(string);
 	
 	invalidate_object(object);
 	
@@ -1575,8 +1601,8 @@ void run_teleporter_properties_dialog(void *menu, struct object_t *object)
 			"texture_checkbutton")), TRUE);
 	
 	if(object->teleporter_data.texture_filename)
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
-			object->teleporter_data.texture_filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
+			object->teleporter_data.texture_filename);
 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"width_spinbutton")), (gfloat)object->teleporter_data.width);
@@ -1645,9 +1671,9 @@ void on_gravity_well_texture_checkbutton_toggled(GtkToggleButton *togglebutton, 
 }
 
 
-void on_gravity_well_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_gravity_well_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
-	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(editable));
+	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(chooser));
 	struct object_t *object = g_object_get_data(G_OBJECT(dialog), "object");
 
 	stop_working();
@@ -1658,18 +1684,19 @@ void on_gravity_well_texture_entry_changed(GtkEditable *editable, gpointer user_
 	free_surface(object->gravity_well_data.texture_pre_surface);
 	object->gravity_well_data.texture_pre_surface = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	object->gravity_well_data.texture_filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+	{
+		object->gravity_well_data.texture_filename = arb_abs2rel(strval, map_path->text);
+		
+		struct string_t *string = arb_rel2abs(object->gravity_well_data.texture_filename->text, 
+			map_path->text);
+		object->gravity_well_data.texture_pre_surface = 
+			read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
+		free_string(string);
+	}
 	
 	g_free(strval);
-
-	struct string_t *string = arb_rel2abs(object->gravity_well_data.texture_filename->text, 
-		map_path->text);
-	object->gravity_well_data.texture_pre_surface = 
-		read_gdk_pixbuf_surface_as_24bitalpha8bit(string->text);
-	free_string(string);
 	
 	invalidate_object(object);
 	
@@ -1765,8 +1792,8 @@ void run_gravity_well_properties_dialog(void *menu, struct object_t *object)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(texture_checkbutton), TRUE);
 	
 	if(object->gravity_well_data.texture_filename)
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
-			object->gravity_well_data.texture_filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), "texture_entry")), 
+			object->gravity_well_data.texture_filename);
 
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(dialog), 
 		"width_spinbutton")), (gfloat)object->gravity_well_data.width);
@@ -2645,8 +2672,8 @@ void init_objects()
 	s_shield_energy = read_png_surface(find_resource(
 		"stock-object-textures/shield-pickup.png"));
 	
-	s_stock_speedup_ramp = read_png_surface(find_resource(
-		"stock-speedup-ramp.png"));
+	s_stock_speedup_ramp = read_gdk_pixbuf_surface_as_24bitalpha8bit(find_resource(
+		"stock-speedup-ramp.svg"));
 }
 
 

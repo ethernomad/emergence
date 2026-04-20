@@ -97,6 +97,36 @@ client_src = files(
   'em-client/servers.c',
 )
 
+oggenc = find_program('oggenc', required: false)
+if oggenc.found()
+  oggenc_command = [oggenc, '-q', '2', '@INPUT@', '-o', '@OUTPUT@']
+else
+  ffmpeg = find_program('ffmpeg')
+  oggenc_command = [ffmpeg, '-y', '-loglevel', 'error', '-i', '@INPUT@', '-c:a', 'libvorbis', '-qscale:a', '2', '@OUTPUT@']
+endif
+
+game_sounds = [
+  'railgun',
+  'teleporter',
+  'speedup-ramp',
+  'explosion',
+  'plasma-cannon',
+  'rocket',
+]
+
+generated_game_sounds = []
+foreach sound : game_sounds
+  generated_game_sounds += custom_target(
+    sound + '-ogg',
+    input: join_paths('share/stock-sounds', sound + '.wav'),
+    output: sound + '.ogg',
+    command: oggenc_command,
+    build_by_default: true,
+    install: true,
+    install_dir: join_paths(get_option('datadir'), 'emergence', 'stock-sounds'),
+  )
+endforeach
+
 em_client = executable('em-client',
   client_src,
   link_with: [libgsub_game, libshared_client, libcommon_game],

@@ -46,7 +46,7 @@ The library is never compiled standalone. Each sub-project builds its own `libco
 |------|---------|
 | `resource.h` / `resource.c` | Game asset discovery — searches multiple install directories for a named resource |
 | `user.h` / `user.c` | Per-user directory setup (`~/.emergence/`, skins, maps) |
-| `prefix.h` / `prefix.c` | BinReloc — runtime discovery of the executable's install prefix |
+| `prefix.h` / `prefix.c` | Small path helper functions (`br_strcat`, `br_extract_dir`, `br_extract_prefix`) |
 | `abs2rel.h` / `abs2rel.c` | Convert an absolute filesystem path to a relative path |
 | `rel2abs.h` / `rel2abs.c` | Convert a relative filesystem path to an absolute path |
 
@@ -54,7 +54,6 @@ The library is never compiled standalone. Each sub-project builds its own `libco
 
 | File | Origin |
 |------|--------|
-| `prefix.h` / `prefix.c` | BinReloc by Mike Hearn & Hongli Lai (public domain) |
 | `abs2rel.c` / `abs2rel.h` | Shigio Yamaguchi / Tama Communications (GPLv3) |
 | `rel2abs.c` / `rel2abs.h` | Shigio Yamaguchi / Tama Communications (GPLv3) |
 
@@ -145,10 +144,6 @@ stringbuf.h/c <---------------------------------------- buffer.h/c
     ^                  ^
     |                  |
 resource.h/c      user.h/c
-    ^
-    |
-prefix.h/c
-
 inout.h/c           abs2rel.h/c         rel2abs.h/c
   (standalone)        (standalone)        (standalone)
 ```
@@ -157,7 +152,7 @@ Detailed include relationships:
 
 - `buffer.c` includes `stringbuf.h`, `buffer.h`, `minmax.h`
 - `polygon.c` includes `vertex.h`, `polygon.h`, `llist.h`
-- `resource.c` includes `stringbuf.h`, `prefix.h`
+- `resource.c` includes `stringbuf.h`
 - `user.c` includes `types.h`, `stringbuf.h` (conditionally `console.h`)
 - `inout.c`, `abs2rel.c`, `rel2abs.c` — no project-internal includes
 
@@ -165,36 +160,20 @@ Detailed include relationships:
 
 ## 5. Build & Consumption Model
 
-`common/` has no `configure.in` or top-level `Makefile.am`. It is never built as an independent sub-project. Instead, each consuming sub-project builds its own `libcommon.a`:
-
-### Symlink Pattern
-
-Each sub-project contains a `common/Makefile.am` that declares the source list and creates symlinks back to this directory:
-
-```makefile
-noinst_LIBRARIES = libcommon.a
-libcommon_a_SOURCES = buffer.c polygon.c stringbuf.c ...
-BUILT_SOURCES = $(libcommon_a_SOURCES)
-CLEANFILES = $(libcommon_a_SOURCES)
-
-$(libcommon_a_SOURCES):
-    ln -s ../../common/$@
-```
-
-This ensures a single canonical copy of each source file while allowing each sub-project to compile with its own flags.
+`common/` is consumed from the repository's top-level Meson project. `common/meson.build` declares the shared source list once, then the various sub-projects compile the parts they need into static libraries.
 
 ### Linking
 
-Each final binary links `libcommon.a` via `LDADD`:
+Each final binary links one of the Meson-built static libraries:
 
 | Binary | Link chain |
 |--------|------------|
-| `em-client` | `libcommon.a` ← `libshared.a` ← `libgsub.a` ← client objects |
-| `em-server` | `libcommon.a` ← `libshared.a` ← server objects |
-| `em-edit` | `libcommon.a` ← `libgsub.a` ← editor objects |
-| `em-skin` | `libcommon.a` ← `libgsub.a` ← skin packager objects |
-| `plasma` | `libcommon.a` ← `libgsub.a` ← generator objects |
-| `shield` | `libcommon.a` ← `libgsub.a` ← generator objects |
+| `em-client` | `libcommon_game.a` ← `libshared_client.a` ← `libgsub_game.a` ← client objects |
+| `em-server` | `libcommon_game.a` ← `libshared_server.a` ← server objects |
+| `em-edit` | `libcommon_tools.a` ← `libgsub_tools.a` ← editor objects |
+| `em-skin` | source only (not built by Meson) |
+| `plasma` | `libcommon_misc.a` ← `libgsub_misc.a` ← generator objects |
+| `shield` | `libcommon_misc.a` ← `libgsub_misc.a` ← generator objects |
 
 ### Compile Flags
 
@@ -231,7 +210,7 @@ All public `free_*()`, `buffer_cat_*()`, and `string_cat_*()` functions check fo
 | `LINUX` | Linux-specific code paths, `asprintf` availability |
 | `WIN32` | Windows type aliases (`unsigned __int64`), `itoa` fallbacks |
 | `EMGAME` | Game-specific behavior (console logging in `user.c`) |
-| `ENABLE_BINRELOC` | Activates BinReloc `/proc/self/maps` scanning in `prefix.c` |
+| `PKGDATADIR` | Compile-time install location used by `find_resource()` |
 | `_GNU_SOURCE` | Enables GNU extensions (e.g., `vasprintf`) — defined at the top of most `.c` files |
 | `_REENTRANT` | Enables reentrant/thread-safe libc functions — defined at the top of most `.c` files |
 
@@ -239,9 +218,9 @@ All public `free_*()`, `buffer_cat_*()`, and `string_cat_*()` functions check fo
 
 ## 7. Third-Party Code
 
-### BinReloc (`prefix.h` / `prefix.c`)
+### `prefix.h` / `prefix.c`
 
-By Mike Hearn and Hongli Lai. Public domain. Provides runtime discovery of the executable's installation prefix by scanning `/proc/self/maps`. When `ENABLE_BINRELOC` is defined, the macros `SELFPATH`, `PREFIX`, `BINDIR`, `DATADIR`, and `LIBDIR` resolve to the actual installation paths. Without it, the functions fall back to portable directory/prefix extraction helpers.
+Now a tiny internal path-helper module. It retains only portable string/path routines (`br_strcat`, `br_extract_dir`, `br_extract_prefix`) used by the rest of the tree; the old BinReloc `/proc/self/maps` logic is no longer present.
 
 ### `abs2rel.c` / `rel2abs.c`
 

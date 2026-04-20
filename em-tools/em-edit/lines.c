@@ -193,8 +193,7 @@ void on_switch_checkbutton_toggled(GtkToggleButton *togglebutton, gpointer user_
 }
 
 
-void on_door_colorpicker_color_set(GtkWidget *colorpicker, 
-	guint red, guint green, guint blue, guint alpha, gpointer user_data)
+void on_door_colorpicker_color_set(GtkColorButton *colorpicker, gpointer user_data)
 {
 	;
 }
@@ -238,8 +237,7 @@ void on_door_index_spinbutton_value_changed(GtkEditable *editable, gpointer user
 }
 
 
-void on_switch_colorpicker_color_set(GtkWidget *colorpicker, 
-	guint red, guint green, guint blue, guint alpha, gpointer user_data)
+void on_switch_colorpicker_color_set(GtkColorButton *colorpicker, gpointer user_data)
 {
 	;
 }

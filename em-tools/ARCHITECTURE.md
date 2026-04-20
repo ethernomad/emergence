@@ -1,12 +1,12 @@
 # em-tools Architecture
 
-em-tools is the tooling package for Emergence, a 2D multiplayer space combat game. It contains two programs — a GTK2/GNOME map editor (`em-edit`) and a CLI skin packager (`em-skin`) — along with shared static libraries for graphics (`gsub`) and general utilities (`common`).
+em-tools is the tooling package for Emergence, a 2D multiplayer space combat game. It contains two programs — a GTK2 map editor (`em-edit`) and a CLI skin packager (`em-skin`) — along with shared static libraries for graphics (`gsub`) and general utilities (`common`).
 
 ---
 
 ## 1. Build System
 
-em-tools is built from the repository's top-level Meson project. `em-tools/meson.build` builds the editor when GTK+ 2.0 is available and the `editor` feature is enabled.
+em-tools is built from the repository's top-level Meson project. `em-tools/meson.build` builds the editor only when GTK+ 2.0 is available and the `editor` feature is enabled or left at `auto`.
 
 ### Sub-projects
 
@@ -22,7 +22,7 @@ em-tools is built from the repository's top-level Meson project. `em-tools/meson
 
 ### Library Split
 
-The editor links against Meson-built static libraries from the top-level `gsub/` and `common/` directories. The tools-specific gsub library is compiled with `-DUSE_GDK_PIXBUF`, while the common library is shared with the rest of the tree.
+The editor links against Meson-built static libraries from the top-level `gsub/` and `common/` directories. The tools-specific gsub library is compiled with `-DUSE_GDK_PIXBUF`, while the common library is shared with the rest of the tree. Editor runtime assets are installed under `${datadir}/emergence`, with the desktop icon also installed under `${datadir}/pixmaps`.
 
 ### Link Chain
 
@@ -36,7 +36,7 @@ For the internal architecture of `libcommon.a` and `libgsub.a`, see [`../../comm
 
 ## 2. em-edit — Map Editor
 
-em-edit is a WYSIWYG 2D map editor built on GTK2 and GNOME2. It renders maps directly to a `GdkImage` backbuffer via the gsub surface system, and uses a cooperative worker thread for expensive background operations (BSP tree construction, texture resampling, tile rendering).
+em-edit is a WYSIWYG 2D map editor built on GTK2. It renders maps directly to a `GdkImage` backbuffer via the gsub surface system, and uses a cooperative worker thread for expensive background operations (BSP tree construction, texture resampling, tile rendering).
 
 ### Map Data Model
 
@@ -367,7 +367,7 @@ For each directory argument, it reads:
 
 Each is loaded as a 24-bit+8-bit-alpha surface via `read_png_surface_as_24bitalpha8bit()` and written with `gzwrite_raw_surface()`. The output file is `<directory>.skin` compressed at level 9.
 
-em-skin depends only on gsub/common helpers, zlib, and libpng — no GTK/GNOME dependency.
+em-skin depends only on gsub/common helpers, zlib, and libpng — no GTK dependency.
 
 ---
 
@@ -493,8 +493,7 @@ All entity types implement `gzwrite_*(gzFile)` and `gzread_*(gzFile)` functions 
 
 | Library | Usage |
 |---------|-------|
-| libgnomeui-2.0 | GNOME2 application framework, file dialogs, color pickers |
-| GTK2 / GDK2 | Window system, event handling, image display |
+| GTK2 / GDK2 | Window system, event handling, file chooser/color button widgets, image display |
 | zlib | Gzip-compressed map/skin file I/O |
 | libpng | PNG texture loading |
 | pthread | Worker thread, mutex |

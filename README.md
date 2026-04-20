@@ -38,7 +38,7 @@ emergence/
 │   ├── pixmaps/           # Icons and pixmaps
 │   └── desktop/           # Desktop entry files
 ├── em-tools/              # Editing tools
-│   ├── em-edit/           # Map editor (GTK+/GNOME)
+│   ├── em-edit/           # Map editor (GTK2)
 │   └── em-skin/           # Skin packager
 ├── common/                # Cross-project utility library
 ├── gsub/                  # Graphics subsystem (shared copy)
@@ -94,7 +94,12 @@ Custom software 2D renderer with:
 
 ## Building
 
-Requires [Meson](https://mesonbuild.com/) >= 0.56 and a C compiler.
+Requires [Meson](https://mesonbuild.com/) >= 0.56, Ninja, a C compiler, and
+either `oggenc` (usually from `vorbis-tools`) or `ffmpeg` to build the stock
+sound assets.
+
+The game build generates `share/stock-sounds/*.ogg` from the checked-in `.wav`
+sources at build time. Building the editor additionally requires GTK+ 2.0.
 
 ```bash
 meson setup builddir
@@ -124,11 +129,13 @@ meson install -C builddir
 | Option | Default | Description |
 |--------|---------|-------------|
 | `nonauthenticating` | false | Build server without key authentication (open/LAN play) |
-| `editor` | auto | Build the map editor (requires GTK+ 2.0) |
+| `editor` | auto | Build the map editor when GTK+ 2.0 is available |
 
 ```bash
 meson setup builddir -Dnonauthenticating=true -Deditor=enabled
 ```
+
+Use `-Deditor=disabled` to skip the editor and avoid the GTK+ 2.0 dependency entirely.
 
 ### Dependencies
 
@@ -138,6 +145,7 @@ meson setup builddir -Dnonauthenticating=true -Deditor=enabled
 | OpenSSL | Client + Server | Key authentication |
 | zlib | All | Compression |
 | libpng | All | Image loading |
+| `oggenc` / `vorbis-tools` / `ffmpeg` | Build only | Generates stock sound assets from `.wav` sources |
 | X11 / XRandr | Client | Video output |
 | OpenGL / GLU | Client | Linked by the client build |
 | ALSA | Client | Sound output |
@@ -163,6 +171,8 @@ em-client
 
 Configure via in-game console or `default-client.autoexec`. Default controls are defined in `default-controls.config`.
 
+The server browser cache lives in `~/.emergence/rumoured.client`. It is created and updated at runtime; no seed `rumoured.client` file is installed.
+
 ### Map Editor
 
 ```bash
@@ -182,7 +192,7 @@ Node-based editor with Bezier/conic curves, lines, fills, tiles, and object plac
 
 ## Distribution
 
-The project includes a `.deb` package target for i686 Linux. Assets (maps, skins, sounds, demos) are installed to the shared data directory.
+The repository includes sample Debian and RPM metadata for Meson-based packaging. Installed assets (maps, skins, sounds, demos, and editor resources when enabled) live under the shared data directory.
 
 ## History
 

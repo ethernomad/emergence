@@ -553,12 +553,8 @@ on_door_switch_properties_dialog_destroy
                                         gpointer         user_data);
 
 void
-on_door_colorpicker_color_set          (GtkWidget *colorpicker,
-                                        guint            red,
-                                        guint            green,
-                                        guint            blue,
-                                        guint            alpha,
-                                        gpointer         user_data);
+on_door_colorpicker_color_set          (GtkColorButton  *colorpicker,
+						gpointer         user_data);
 
 void
 on_door_width_spinbutton_value_changed (GtkSpinButton   *spinbutton,
@@ -598,12 +594,8 @@ on_door_checkbutton_toggled            (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
 
 void
-on_switch_colorpicker_color_set        (GtkWidget *colorpicker,
-                                        guint            red,
-                                        guint            green,
-                                        guint            blue,
-                                        guint            alpha,
-                                        gpointer         user_data);
+on_switch_colorpicker_color_set        (GtkColorButton  *colorpicker,
+						gpointer         user_data);
 
 void
 on_switch_width_spinbutton_value_changed
@@ -649,12 +641,8 @@ on_fill_properties_dialog_destroy      (GtkObject       *object,
                                         gpointer         user_data);
 
 void
-on_fill_solid_colorpicker_color_set    (GtkWidget *colorpicker,
-                                        guint            red,
-                                        guint            green,
-                                        guint            blue,
-                                        guint            alpha,
-                                        gpointer         user_data);
+on_fill_solid_colorpicker_color_set    (GtkColorButton  *colorpicker,
+						gpointer         user_data);
 
 void
 on_fill_solid_radiobutton_toggled      (GtkToggleButton *togglebutton,
@@ -768,12 +756,8 @@ on_wall_properties_dialog_destroy      (GtkObject       *object,
                                         gpointer         user_data);
 
 void
-on_wall_solid_colorpicker_color_set    (GtkWidget *colorpicker,
-                                        guint            red,
-                                        guint            green,
-                                        guint            blue,
-                                        guint            alpha,
-                                        gpointer         user_data);
+on_wall_solid_colorpicker_color_set    (GtkColorButton  *colorpicker,
+						gpointer         user_data);
 
 void
 on_wall_solid_radiobutton_toggled      (GtkToggleButton *togglebutton,
@@ -1293,59 +1277,59 @@ on_wall_texture_entry_activate         (GtkEntry        *entry,
                                         gpointer         user_data);
 
 void
-on_wall_texture_entry_changed          (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_wall_texture_entry_changed          (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
 on_rocket_launcher_texture_entry_changed
-                                        (GtkEditable     *editable,
-                                        gpointer         user_data);
+						(GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_speedup_ramp_texture_entry_changed  (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_speedup_ramp_texture_entry_changed  (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_minigun_texture_entry_changed       (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_minigun_texture_entry_changed       (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_plasma_cannon_texture_entry_changed (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_plasma_cannon_texture_entry_changed (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_rails_texture_pixmapentry_changed   (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_rails_texture_pixmapentry_changed   (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_shield_energy_texture_entry_changed (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_shield_energy_texture_entry_changed (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_spawn_point_texture_entry_changed   (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_spawn_point_texture_entry_changed   (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_gravity_well_texture_entry_changed  (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_gravity_well_texture_entry_changed  (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_teleporter_texture_entry_changed    (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_teleporter_texture_entry_changed    (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_fill_texture_entry_changed          (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_fill_texture_entry_changed          (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_node_texture_entry_changed          (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_node_texture_entry_changed          (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
-on_end_node_texture_entry_changed      (GtkEditable     *editable,
-                                        gpointer         user_data);
+on_end_node_texture_entry_changed      (GtkFileChooserButton *chooser,
+						gpointer         user_data);
 
 void
 on_crossover_node_texture_entry_changed
-                                        (GtkEditable     *editable,
-                                        gpointer         user_data);
+						(GtkFileChooserButton *chooser,
+						gpointer         user_data);

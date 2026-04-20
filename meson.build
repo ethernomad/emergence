@@ -23,6 +23,7 @@ zlib_dep = dependency('zlib', required: false)
 png_dep = dependency('libpng', required: false)
 m_dep = cc.find_library('m', required: false)
 pthread_dep = dependency('threads')
+gtk_dep = dependency('gtk+-2.0', required: get_option('editor'), disabler: true)
 
 subdir('common')
 subdir('gsub')

@@ -14,6 +14,7 @@
 
 #include <gtk/gtk.h>
 
+#include "resource.h"
 #include "support.h"
 
 GtkWidget*
@@ -49,11 +50,14 @@ create_pixmap                          (GtkWidget       *widget,
 {
   GtkWidget *pixmap;
   gchar *pathname;
+  gchar *resource;
 
   if (!filename || !filename[0])
       return gtk_image_new ();
 
-  pathname = g_build_filename(PKGDATADIR, "pixmaps", filename, NULL);
+  resource = g_build_filename ("pixmaps", filename, NULL);
+  pathname = g_strdup (find_resource (resource));
+  g_free (resource);
   if (!pathname)
     {
       g_warning ("Couldn't find pixmap file: %s", filename);
@@ -70,13 +74,16 @@ GdkPixbuf*
 create_pixbuf                          (const gchar     *filename)
 {
   gchar *pathname = NULL;
+  gchar *resource = NULL;
   GdkPixbuf *pixbuf;
   GError *error = NULL;
 
   if (!filename || !filename[0])
       return NULL;
 
-  pathname = g_build_filename(PKGDATADIR, "pixmaps", filename, NULL);
+  resource = g_build_filename ("pixmaps", filename, NULL);
+  pathname = g_strdup (find_resource (resource));
+  g_free (resource);
 
   if (!pathname)
     {
@@ -110,4 +117,3 @@ glade_set_atk_action_description       (AtkAction       *action,
         atk_action_set_description (action, i, description);
     }
 }
-

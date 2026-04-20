@@ -53,6 +53,24 @@ struct node_pointer_t *hover_nodes = NULL;
 
 struct surface_t *s_node, *s_vectsat, *s_widthsat;
 
+static gchar *get_texture_filename(GtkWidget *chooser)
+{
+	return gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(chooser));
+}
+
+static void set_texture_filename(GtkWidget *chooser, struct string_t *filename)
+{
+	if(!filename)
+	{
+		gtk_file_chooser_unselect_all(GTK_FILE_CHOOSER(chooser));
+		return;
+	}
+
+	struct string_t *string = arb_rel2abs(filename->text, map_path->text);
+	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(chooser), string->text);
+	free_string(string);
+}
+
 
 struct node_t *new_node()
 {
@@ -1075,7 +1093,7 @@ void set_node_sats(struct node_t *node, double angle,
 }
 
 
-void on_end_node_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_end_node_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
 	;
 }
@@ -1435,8 +1453,8 @@ void run_end_node_properties_dialog(struct node_t *node)
 
 	if(node->texture_filename)
 	{
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), 
-			"texture_entry")), node->texture_filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), 
+			"texture_entry")), node->texture_filename);
 	}
 	
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(dialog), 
@@ -2020,19 +2038,19 @@ void on_crossover_node_blend_radiobutton_toggled(GtkToggleButton *togglebutton, 
 }
 
 
-void on_crossover_node_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_crossover_node_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
-	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(editable));
+	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(chooser));
 	struct node_t *node = g_object_get_data(G_OBJECT(dialog), "node");
 		
 	stop_working();
 	
 	free_string(node->texture_filename);
+	node->texture_filename = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
-	
-	node->texture_filename = arb_abs2rel(strval, map_path->text);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
+	if(strval)
+		node->texture_filename = arb_abs2rel(strval, map_path->text);
 	
 	g_free(strval);
 	

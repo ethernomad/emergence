@@ -48,6 +48,24 @@
 
 struct curve_t *curve0 = NULL;
 
+static gchar *get_texture_filename(GtkWidget *chooser)
+{
+	return gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(chooser));
+}
+
+static void set_texture_filename(GtkWidget *chooser, struct string_t *filename)
+{
+	if(!filename)
+	{
+		gtk_file_chooser_unselect_all(GTK_FILE_CHOOSER(chooser));
+		return;
+	}
+
+	struct string_t *string = arb_rel2abs(filename->text, map_path->text);
+	gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(chooser), string->text);
+	free_string(string);
+}
+
 
 int add_curve_pointer(struct curve_pointer_t **curvep0, struct curve_t *curve)
 {
@@ -1233,18 +1251,19 @@ void invalidate_curve(struct curve_t *curve)		// always called when not working
 }
 
 
-void on_wall_solid_colorpicker_color_set(GtkWidget *colorpicker, 
-	guint red, guint green, guint blue, guint alpha, gpointer user_data)
+void on_wall_solid_colorpicker_color_set(GtkColorButton *colorpicker, gpointer user_data)
 {
 	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(colorpicker));
 	struct curve_t *curve = g_object_get_data(G_OBJECT(dialog), "curve");
+	GdkColor color;
 	
 	stop_working();
 	
-	curve->red = red >> 8;
-	curve->green = green >> 8;
-	curve->blue = blue >> 8;
-	curve->alpha = alpha >> 8;
+	gtk_color_button_get_color(colorpicker, &color);
+	curve->red = color.red >> 8;
+	curve->green = color.green >> 8;
+	curve->blue = color.blue >> 8;
+	curve->alpha = gtk_color_button_get_alpha(colorpicker) >> 8;
 	
 	invalidate_curve(curve);
 	update_client_area();
@@ -1580,21 +1599,21 @@ void on_wall_width_lock_spinbutton_value_changed(GtkSpinButton *spinbutton, gpoi
 }
 
 
-void on_wall_texture_entry_changed(GtkEditable *editable, gpointer user_data)
+void on_wall_texture_entry_changed(GtkFileChooserButton *chooser, gpointer user_data)
 {
-	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(editable));
+	GtkWidget *dialog = gtk_widget_get_toplevel(GTK_WIDGET(chooser));
 	struct curve_t *curve = g_object_get_data(G_OBJECT(dialog), "curve");
 		
 	stop_working();
 	
 	free_string(curve->texture_filename);
+	curve->texture_filename = NULL;
 	
-	gchar *strval;
-	g_object_get(G_OBJECT(editable), "text", &strval, NULL);
+	gchar *strval = get_texture_filename(GTK_WIDGET(chooser));
 	
-	if(map_filename->text[0])
+	if(strval && map_filename->text[0])
 		curve->texture_filename = arb_abs2rel(strval, map_path->text);
-	else
+	else if(strval)
 		curve->texture_filename = new_string_text(strval);
 	
 	g_free(strval);
@@ -1642,8 +1661,8 @@ void run_wall_properties_dialog(void *menu, struct curve_t *curve)
 	
 	if(curve->texture_filename)
 	{
-		gtk_entry_set_text(GTK_ENTRY(g_object_get_data(G_OBJECT(dialog), 
-			"texture_entry")), curve->texture_filename->text);
+		set_texture_filename(GTK_WIDGET(g_object_get_data(G_OBJECT(dialog), 
+			"texture_entry")), curve->texture_filename);
 	}
 	
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(dialog), 

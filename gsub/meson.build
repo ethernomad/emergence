@@ -27,12 +27,14 @@ libgsub_game = static_library('gsub-game',
   include_directories: [common_inc, gsub_inc],
 )
 
-libgsub_tools = static_library('gsub-tools',
-  gsub_src + (is_x86_32 ? gsub_asm_src : []),
-  c_args: common_c_args + ['-DUSE_GDK_PIXBUF'],
-  dependencies: dependency('gtk+-2.0', required: get_option('editor')),
-  include_directories: [common_inc, gsub_inc],
-)
+if gtk_dep.found()
+  libgsub_tools = static_library('gsub-tools',
+    gsub_src + (is_x86_32 ? gsub_asm_src : []),
+    c_args: common_c_args + ['-DUSE_GDK_PIXBUF'],
+    dependencies: gtk_dep,
+    include_directories: [common_inc, gsub_inc],
+  )
+endif
 
 libgsub_misc = static_library('gsub-misc',
   gsub_src + (is_x86_32 ? gsub_asm_src : []),

@@ -43,12 +43,6 @@ void load_rumoured_servers()
 	
 	#ifdef EMCLIENT
 	string_cat_text(filename, "/rumoured.client");
-	struct stat buf;
-	if(stat(filename->text, &buf) == -1)
-	{
-		free_string(filename);
-		filename = new_string_text(find_resource("rumoured.client"));
-	}
 	#endif
 	
 	#ifdef EMSERVER

@@ -1,5 +1,3 @@
-gtk_dep = dependency('gtk+-2.0', required: get_option('editor'), disabler: true)
-
 if gtk_dep.found()
   edit_src = files(
     'em-edit/bezier.c',
@@ -37,24 +35,33 @@ if gtk_dep.found()
     install: true,
   )
 
-  shared_object_textures = [
-    'rails.png',
-    'shield-pickup.png',
-    'unowned-minigun.png',
-    'unowned-plasma-cannon.png',
-    'unowned-rocket-launcher.png',
-  ]
+  install_data(
+    'share/gravity-well-placeholder.png',
+    'share/node.png',
+    'share/point.png',
+    'share/select.png',
+    'share/spawn-point-placeholder.png',
+    'share/splash.png',
+    'share/stock-speedup-ramp.svg',
+    'share/teleporter-placeholder.png',
+    'share/vect-sat.png',
+    'share/width-sat.png',
+    install_dir: join_paths(get_option('datadir'), 'emergence'),
+  )
 
-  foreach f : shared_object_textures
-    install_data(
-      join_paths('../stock-object-textures', f),
-      install_dir: join_paths(get_option('datadir'), 'emergence', 'stock-object-textures'),
-    )
-  endforeach
+  install_data(
+    'share/stock-textures/bukuj.png',
+    install_dir: join_paths(get_option('datadir'), 'emergence', 'stock-textures'),
+  )
 
   install_data(
     'pixmaps/emergence.png',
     install_dir: join_paths(get_option('datadir'), 'pixmaps'),
+  )
+
+  install_data(
+    'pixmaps/emergence.png',
+    install_dir: join_paths(get_option('datadir'), 'emergence', 'pixmaps'),
   )
 
   install_data(
