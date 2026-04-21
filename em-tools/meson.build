@@ -1,3 +1,14 @@
+if zlib_dep.found() and png_dep.found()
+  em_skin = executable('em-skin',
+    files('em-skin/main.c'),
+    link_with: [libgsub_misc, libcommon_tools],
+    dependencies: [zlib_dep, png_dep, m_dep],
+    c_args: common_c_args,
+    include_directories: [common_inc, gsub_inc],
+    install: true,
+  )
+endif
+
 if gtk_dep.found()
   edit_src = files(
     'em-edit/bezier.c',

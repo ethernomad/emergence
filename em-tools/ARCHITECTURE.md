@@ -6,28 +6,29 @@ em-tools is the tooling package for Emergence, a 2D multiplayer space combat gam
 
 ## 1. Build System
 
-em-tools is built from the repository's top-level Meson project. `em-tools/meson.build` builds the editor only when GTK+ 2.0 is available and the `editor` feature is enabled or left at `auto`.
+em-tools is built from the repository's top-level Meson project. `em-tools/meson.build` builds `em-skin` whenever zlib and libpng are available, and builds the editor only when GTK+ 2.0 is available and the `editor` feature is enabled or left at `auto`.
 
 ### Sub-projects
 
 | Directory | Output | Status |
 |-----------|--------|--------|
 | `em-edit/` | `em-edit` binary | Built when `gtk+-2.0` is available |
-| `em-skin/` | source only | Present in tree, not built by Meson |
-| `gsub/` | `libgsub_tools.a` | Static library shared with the editor build |
-| `common/` | `libcommon_tools.a` | Static library shared with the editor build |
+| `em-skin/` | `em-skin` binary | Built when zlib and libpng are available |
+| `gsub/` | `libgsub_tools.a`, `libgsub_misc.a` | Static libraries shared with the editor and skin packager builds |
+| `common/` | `libcommon_tools.a` | Static library shared with both tool binaries |
 | `pixmaps/` | `emergence.png` | Desktop icon |
 | `desktop/` | `em-edit.desktop` | Freedesktop .desktop file |
 | `share/` | PNG/SVG assets | Splash screen, node/point icons, stock textures |
 
 ### Library Split
 
-The editor links against Meson-built static libraries from the top-level `gsub/` and `common/` directories. The tools-specific gsub library is compiled with `-DUSE_GDK_PIXBUF`, while the common library is shared with the rest of the tree. Editor runtime assets are installed under `${datadir}/emergence`, with the desktop icon also installed under `${datadir}/pixmaps`.
+The tools binaries link against Meson-built static libraries from the top-level `gsub/` and `common/` directories. `em-edit` uses the tools-specific gsub library compiled with `-DUSE_GDK_PIXBUF`, while `em-skin` links the non-GTK `libgsub_misc.a` because it only needs PNG and raw-surface helpers. The common library is shared with the rest of the tree. Editor runtime assets are installed under `${datadir}/emergence`, with the desktop icon also installed under `${datadir}/pixmaps`.
 
 ### Link Chain
 
 ```
 em-edit: libcommon_tools.a + libgsub_tools.a + em-edit objects + GTK2 + zlib + libpng + libm + pthread
+em-skin: libcommon_tools.a + libgsub_misc.a + em-skin objects + zlib + libpng + libm
 ```
 
 For the internal architecture of `libcommon.a` and `libgsub.a`, see [`../../common/ARCHITECTURE.md`](../common/ARCHITECTURE.md) and [`../../gsub/ARCHITECTURE.md`](../gsub/ARCHITECTURE.md).
@@ -355,7 +356,7 @@ File paths for textures are stored as relative paths (via `abs2rel`/`rel2abs` fr
 
 ## 3. em-skin — Skin Packager
 
-A CLI tool that reads PNG textures from a named directory and writes a gzip-compressed `.skin` file. The source remains in the tree, but it is not currently built by Meson.
+A CLI tool that reads PNG textures from a named directory and writes a gzip-compressed `.skin` file. Meson builds it whenever zlib and libpng are available.
 
 Usage: `em-skin <directory>`
 

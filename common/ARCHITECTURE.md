@@ -171,7 +171,7 @@ Each final binary links one of the Meson-built static libraries:
 | `em-client` | `libcommon_game.a` ← `libshared_client.a` ← `libgsub_game.a` ← client objects |
 | `em-server` | `libcommon_game.a` ← `libshared_server.a` ← server objects |
 | `em-edit` | `libcommon_tools.a` ← `libgsub_tools.a` ← editor objects |
-| `em-skin` | source only (not built by Meson) |
+| `em-skin` | `libcommon_tools.a` ← `libgsub_misc.a` ← skin packager objects |
 | `plasma` | `libcommon_misc.a` ← `libgsub_misc.a` ← generator objects |
 | `shield` | `libcommon_misc.a` ← `libgsub_misc.a` ← generator objects |
 
